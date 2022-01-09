@@ -1,0 +1,85 @@
+{% extends "admin/base_site.html" %}
+{% load i18n static admin_data_utils %}
+
+{% block extrastyle %}
+  {{ block.super }}
+  <link rel="stylesheet" type="text/css" href="{% static "admin/css/forms.css" %}">
+{% endblock %}
+
+{% block coltype %}colM{% endblock %}
+
+{% block bodyclass %}{{ block.super }} app-{{ app_label }} change-list{% endblock %}
+
+{% if not is_popup %}
+{% block breadcrumbs %}
+<div class="breadcrumbs">
+<a href="{% url 'admin:index' %}">{% translate 'Home' %}</a>
+&rsaquo; <a href="{% url 'admin:admin_data_index_view' %}">{{ app_label|capfirst }}</a>
+&rsaquo; <a href="{{ category_url }}">{{ category_slug|capfirst }}</a>
+&rsaquo; {{ slug|capfirst }}
+</div>
+{% endblock %}
+{% endif %}
+
+{% block content %}
+  <div id="content-main">
+    <form method="post" novalidate>{% csrf_token %}
+      <div>
+      {% if image %}
+        <img src="{{ image }}" alt="" style="max-width: 470px; padding-bottom: 10px">
+      {% endif %}
+      {% for section in data %}
+        <fieldset class="module aligned">
+          {% if section.name %}
+          <h2>{{ section.name }}</h2>
+          {% endif %}
+          {% if section.description %}
+          <div class="description">{{ section.description|safe }}</div>
+          {% endif %}
+          {% for key, value in section.fields.items %}
+          <div class="form-row">
+            {% if value|get_type == "dict" %}
+            <div>
+              <label class="required">{{ key|capfirst }}</label>
+              <div style="float: left;">
+              {% for k, v in value.items %}
+                <label class="required" for="id-{{ k }}" style="float: none;display: inline-block">{{ k|capfirst }}</label>
+                {% if v|length > 40 %}
+                <textarea class="vTextField" id="id-{{ k }}" rows="6" disabled>{{ v|safe }}</textarea>
+                {% else %}
+                <input type="text" value="{{ v|safe }}" class="vTextField" id="id-{{ k }}" disabled>
+                {% endif %}
+                <br>
+              {% endfor %}
+              </div>
+            </div>
+            {% elif value|get_type == "list" %}
+              <label class="required">{{ key|capfirst }}</label>
+              <div style="float: left;">
+              {% for v in value %}
+                {% if v|length > 40 %}
+                <textarea class="vTextField" rows="6" disabled>{{ v|safe }}</textarea>
+                {% else %}
+                <input type="text" value="{{ v|safe }}" class="vTextField" disabled>
+                {% endif %}
+                <br>
+              {% endfor %}
+              </div>
+            {% else %}
+            <div class="fieldBox field-{{ key }}">
+              <label class="required" for="id-{{ key }}">{{ key|capfirst }}</label>
+              {% if value|length > 40 %}
+              <textarea class="vTextField" id="id-{{ key }}" rows="6" disabled>{{ value|safe }}</textarea>
+              {% else %}
+              <input type="text" value="{{ value|safe }}" class="vTextField" id="id-{{ key }}" disabled>
+              {% endif %}
+            </div>
+            {% endif %}
+          </div>
+          {% endfor %}
+        </fieldset>
+      {% endfor %}
+      </div>
+    </form>
+  </div>
+{% endblock %}

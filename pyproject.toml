@@ -1,0 +1,148 @@
+[tool.poetry]
+name = "django-admin-data-views"
+version = "0.0.1"
+description = "Add custom data views to django admin panel."
+authors = [
+    "Matti Lamppu <lamppu.matti.akseli@gmail.com>",
+]
+packages = [
+    { include = "admin_data_views" },
+]
+license = "MIT"
+readme = "README.md"
+homepage = "https://github.com/MrThearMan/django-admin-data-views"
+repository = "https://github.com/MrThearMan/django-admin-data-views"
+keywords = [
+    "django",
+    "admin",
+    "panel",
+    "custom",
+    "views",
+    "data",
+]
+include = [
+    "README.md",
+    "LICENSE",
+]
+classifiers = [
+    "Environment :: Web Environment",
+    "Framework :: Django",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "Framework :: Django :: 3.2",
+    "Framework :: Django :: 4.0",
+    "Intended Audience :: Developers",
+    "Natural Language :: English",
+]
+exclude = [
+    "tests",
+]
+
+[tool.poetry.urls]
+"Bug Tracker" = "https://github.com/MrThearMan/django-admin-data-views/issues"
+
+
+[tool.poetry.dependencies]
+python = ">=3.8,<4"
+Django = ">=3.2"
+django-settings-holder = ">=0.0.1"
+
+[tool.poetry.dev-dependencies]
+pytest-cov = "^3.0.0"
+pytest-django = "^4.5.2"
+tomli = "1.2.3"
+pre-commit = "^2.16.0"
+tox-gh-actions = "^2.8.1"
+tox = "^3.24.5"
+coveralls = "^3.3.1"
+mkdocs = "^1.2.3"
+black = "^21.12b0"
+isort = "^5.10.1"
+flake8 = "^4.0.1"
+mypy = "^0.931"
+pylint = "^2.12.2"
+django-stubs = "^1.9.0"
+
+[tool.black]
+line-length = 120
+
+[tool.isort]
+profile = "black"
+line_length = 120
+skip_gitignore = "True"
+lines_after_imports = 2
+
+[tool.pylint.MASTER]
+ignore-paths = [
+    "tests/*",
+    "docs/*",
+    ".venv/*",
+    ".tox/*",
+]
+
+[tool.pylint.messages_control]
+disable = "C0330, C0326, C0114, C0115, C0116, R0903, R0913, R1721, W1203, E0401"
+
+[tool.pylint.format]
+max-line-length = "120"
+
+[tool.pylint.miscellaneous]
+notes = "FIXME,XXX,BUG"
+
+[tool.mypy]
+python_version = "3.10"
+warn_return_any = "True"
+warn_unused_configs = "True"
+plugins = [
+    "mypy_django_plugin.main",
+]
+
+[tool.coverage.run]
+relative_files = true
+
+[tool.coverage.report]
+omit = [
+    "tests/*",
+    "docs/*",
+    ".venv/*",
+    ".tox/*",
+]
+exclude_lines = [
+    "if TYPE_CHECKING:",
+    "except ImportError:",
+]
+
+[tool.django-stubs]
+django_settings_module = "tests.django.settings"
+
+[tool.tox]
+legacy_tox_ini = """
+[tox]
+envlist = py{38, 39, 310}-django{32, 40}
+isolated_build = true
+
+[gh-actions]
+python =
+    3.8: py38
+    3.9: py39
+    3.10: py310
+
+[testenv]
+whitelist_externals =
+    poetry
+setenv =
+    PYTHONPATH = {toxinidir}
+deps =
+    django32: Django>=3.2,<4.0
+    django40: Django>=4.0,<4.1
+
+    pytest-cov
+    pytest-django
+commands =
+    coverage run -m pytest -vv -s --log-cli-level=INFO
+"""
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
