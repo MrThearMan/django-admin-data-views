@@ -33,7 +33,7 @@
             <table id="result_list">
               <thead>
                 <tr>
-                {% for header in headers %}
+                {% for header in table.keys %}
                   <th scope="col">
                     <div class="text">
                       <span>{{ header|capfirst }}</span>
@@ -43,7 +43,7 @@
                 </tr>
               </thead>
               <tbody>
-              {% for row in rows %}
+              {% for row in table.values %}
                 <tr>
                 {% for item in row %}
                   <td>{{ item }}</td>

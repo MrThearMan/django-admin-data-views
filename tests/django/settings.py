@@ -105,32 +105,32 @@ ADMIN_DATA_VIEWS = {
     "URLS": [
         {
             "route": "foo/",
-            "view": "tests.django.urls.custom_view1",
+            "view": "tests.django.urls.foo_list_view",
             "name": "foo_list",
             "items": {
                 "route": "<int:idd>/",
-                "view": "tests.django.urls.custom_view2",
+                "view": "tests.django.urls.foo_items_view",
                 "name": "foo_item",
             },
         },
         {
             "route": "bar/",
-            "view": "tests.django.urls.custom_view3",
+            "view": "tests.django.urls.bar_list_view",
             "name": "bar_list",
             "items": {
                 "route": "bar/",
-                "view": "tests.django.urls.custom_view4",
+                "view": "tests.django.urls.bar_items_view",
                 "name": "bar_item",
             },
         },
         {
             "route": "fizz/",
-            "view": "tests.django.urls.custom_view5",
+            "view": "tests.django.urls.fizz_view",
             "name": "fizz",
         },
         {
             "route": "buzz/",
-            "view": "tests.django.urls.custom_view6",
+            "view": "tests.django.urls.buzz_view",
             "name": "buzz",
         },
     ],

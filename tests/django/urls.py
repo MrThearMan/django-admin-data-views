@@ -1,4 +1,6 @@
-from django.contrib.auth.models import User
+from django.contrib.auth.admin import GroupAdmin, UserAdmin
+from django.contrib.auth.models import Group, User
+from django.core.handlers.wsgi import WSGIRequest
 from django.core.management import call_command
 from django.urls import path
 
@@ -15,27 +17,24 @@ if not User.objects.filter(username="x", email="user@user.com").exists():
     User.objects.create_superuser(username="x", email="user@user.com", password="x")
 
 
-admin_site.register(User)
+admin_site.register(User, UserAdmin)
+admin_site.register(Group, GroupAdmin)
 
 
 @render_with_table_view
-def custom_view1(request):
+def foo_list_view(request: WSGIRequest):
     return TableContext(
         title="Foo items",
         subtitle=None,
-        headers=[
-            "Name",
-            "Value",
-        ],
-        rows=[
-            [item_view_link(link_text="Foo", view=custom_view1, args=(123,)), "1"],
-            [item_view_link(link_text="Bar", view=custom_view1, args=(124,)), "2"],
-        ],
+        table={
+            "Name": [item_view_link(link_text="Foo", view=foo_list_view, args=(123,)), "1"],
+            "Value": [item_view_link(link_text="Bar", view=foo_list_view, args=(124,)), "2"],
+        },
     )
 
 
 @render_with_item_view
-def custom_view2(request, idd):
+def foo_items_view(request, idd):
     return ItemContext(
         slug=idd,
         title=f"This is {idd}",
@@ -48,29 +47,32 @@ def custom_view2(request, idd):
                 "fields": {
                     "Foo": idd,
                 },
-            }
+            },
+            {
+                "name": "This is another section",
+                "description": "This is the description for this section",
+                "fields": {
+                    "Fizz": idd * 2,
+                },
+            },
         ],
     )
 
 
 @render_with_table_view
-def custom_view3(request):
+def bar_list_view(request):
     return TableContext(
         title="Bar items",
         subtitle=None,
-        headers=[
-            "Fizz",
-            "Buzz",
-        ],
-        rows=[
-            [item_view_link(link_text="X", view=custom_view3), "1"],
-            [item_view_link(link_text="Y", view=custom_view3), "2"],
-        ],
+        table={
+            "Fizz": [item_view_link(link_text="X", view=bar_list_view), "1"],
+            "Buzz": [item_view_link(link_text="Y", view=bar_list_view), "2"],
+        },
     )
 
 
 @render_with_item_view
-def custom_view4(request):
+def bar_items_view(request):
     return ItemContext(
         slug=None,
         title=f"Bar page",
@@ -83,32 +85,35 @@ def custom_view4(request):
                 "fields": {
                     "Foo": "Bar",
                 },
-            }
+            },
+            {
+                "name": "This is another section",
+                "description": "This is the description for this section",
+                "fields": {
+                    "Fizz": "Buzz",
+                },
+            },
         ],
     )
 
 
 @render_with_table_view
-def custom_view5(request):
+def fizz_view(request):
     return TableContext(
-        title="Fizz Buzz items",
+        title="Fizz view",
         subtitle=None,
-        headers=[
-            "A",
-            "B",
-        ],
-        rows=[
-            ["X", "1"],
-            ["Y", "2"],
-        ],
+        table={
+            "A": ["X", "1"],
+            "B": ["Y", "2"],
+        },
     )
 
 
 @render_with_item_view
-def custom_view6(request):
+def buzz_view(request):
     return ItemContext(
         slug=None,
-        title=f"Bar page",
+        title=f"Buzz page",
         subtitle=None,
         image=None,
         data=[
@@ -118,7 +123,7 @@ def custom_view6(request):
                 "fields": {
                     "Foo": "Bar",
                 },
-            }
+            },
         ],
     )
 

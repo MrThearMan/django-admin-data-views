@@ -1,6 +1,7 @@
 site_name: Django Admin Data Views
 nav:
   - Home: index.md
+  - Setup: setup.md
 theme:
   name: readthedocs
   highlightjs: true

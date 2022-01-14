@@ -37,11 +37,10 @@ class AppDict(TypedDict):
 class TableContext(TypedDict):
     title: str
     subtitle: Optional[str]
-    headers: List[str]
-    rows: List[List[Any]]
+    table: Dict[str, List[Any]]
 
 
-class ItemContextData(TypedDict):
+class SectionData(TypedDict):
     name: Optional[str]
     description: Optional[str]
     fields: Dict[str, Any]
@@ -52,7 +51,7 @@ class ItemContext(TypedDict):
     title: str
     subtitle: Optional[str]
     image: Optional[str]
-    data: List[ItemContextData]
+    data: List[SectionData]
 
 
 class ItemConfig(TypedDict):

@@ -22,3 +22,5 @@ pip install django-admin-data-views
 
 ---
 
+Django Admin Data Views enables you to easily add non-model data to the django admin panel.
+Data from an API or file can be shown in similar table and item views than regular models.
