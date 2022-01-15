@@ -2,7 +2,7 @@ from typing import Any, Dict, List, NamedTuple, Optional, Set, Union
 
 from django.conf import settings
 from django.test.signals import setting_changed
-from settings_holder import holder
+from settings_holder import holder, reload_settings
 
 from .typing import URLConfig
 
@@ -19,7 +19,9 @@ class AdminDataViewsSettings(NamedTuple):
     URLS: List[URLConfig] = []
 
 
-USER_SETTINGS: Optional[Dict[str, Any]] = getattr(settings, "ADMIN_DATA_VIEWS", None)
+SETTING_NAME = "ADMIN_DATA_VIEWS"
+
+USER_SETTINGS: Optional[Dict[str, Any]] = getattr(settings, SETTING_NAME, None)
 
 DEFAULTS: Dict[str, Any] = AdminDataViewsSettings()._asdict()
 
@@ -32,10 +34,10 @@ class SettingsHolder(holder.SettingsHolder):
     def perform_import(self, val: str, setting: str) -> Any:
         if setting in {"URLS"}:
             val: List[URLConfig]
-            for item in val:
+            for i, item in enumerate(val):
                 missing = {"route", "view", "name"}.difference(item.keys())
                 if missing:
-                    raise RuntimeError(f"Missing keys in ADMIN_DATA_VIEWS: {missing}")
+                    raise RuntimeError(f"Missing keys in ADMIN_DATA_VIEWS[{i}]: {missing}")
 
                 item["route"] = item["route"].rstrip("/").lstrip("/")
                 item["view"] = self.import_from_string(item["view"], setting)  # type: ignore
@@ -46,7 +48,7 @@ class SettingsHolder(holder.SettingsHolder):
 
                 missing = {"route", "view", "name"}.difference(item["items"].keys())
                 if missing:
-                    raise RuntimeError(f"Missing keys in ADMIN_DATA_VIEWS['items']: {missing}")
+                    raise RuntimeError(f"Missing keys in ADMIN_DATA_VIEWS[{i}]['items']: {missing}")
 
                 item["items"]["route"] = item["items"]["route"].rstrip("/").lstrip("/")
                 item["items"]["view"] = self.import_from_string(item["items"]["view"], setting)  # type: ignore
@@ -63,12 +65,4 @@ admin_data_settings = SettingsHolder(
     removed_settings=REMOVED_SETTINGS,
 )
 
-
-def reload_settings(*args, **kwargs) -> None:  # pylint: disable=W0613
-    setting, value = kwargs["setting"], kwargs["value"]
-
-    if setting == "ADMIN_DATA_VIEWS":
-        admin_data_settings.reload(new_user_settings=value)
-
-
-setting_changed.connect(reload_settings)
+setting_changed.connect(reload_settings(SETTING_NAME, admin_data_settings))

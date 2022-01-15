@@ -6,7 +6,7 @@ from django.urls import path
 
 from admin_data_views.admin import admin_site
 from admin_data_views.typing import ItemContext, TableContext
-from admin_data_views.utils import item_view_link, render_with_item_view, render_with_table_view
+from admin_data_views.utils import ItemLink, render_with_item_view, render_with_table_view
 
 
 call_command("makemigrations")
@@ -22,19 +22,19 @@ admin_site.register(Group, GroupAdmin)
 
 
 @render_with_table_view
-def foo_list_view(request: WSGIRequest):
+def foo_list_view(request: WSGIRequest) -> TableContext:
     return TableContext(
         title="Foo items",
         subtitle=None,
         table={
-            "Name": [item_view_link(link_text="Foo", view=foo_list_view, args=(123,)), "1"],
-            "Value": [item_view_link(link_text="Bar", view=foo_list_view, args=(124,)), "2"],
+            "Name": [ItemLink("Foo", idd=123), "1"],
+            "Value": [ItemLink("Bar", idd=124), "2"],
         },
     )
 
 
 @render_with_item_view
-def foo_items_view(request, idd):
+def foo_items_view(request: WSGIRequest, idd: int) -> ItemContext:
     return ItemContext(
         slug=idd,
         title=f"This is {idd}",
@@ -60,19 +60,19 @@ def foo_items_view(request, idd):
 
 
 @render_with_table_view
-def bar_list_view(request):
+def bar_list_view(request: WSGIRequest) -> TableContext:
     return TableContext(
         title="Bar items",
         subtitle=None,
         table={
-            "Fizz": [item_view_link(link_text="X", view=bar_list_view), "1"],
-            "Buzz": [item_view_link(link_text="Y", view=bar_list_view), "2"],
+            "Fizz": [ItemLink("X"), "1"],
+            "Buzz": [ItemLink("Y"), "2"],
         },
     )
 
 
 @render_with_item_view
-def bar_items_view(request):
+def bar_items_view(request: WSGIRequest) -> ItemContext:
     return ItemContext(
         slug=None,
         title=f"Bar page",
@@ -98,7 +98,7 @@ def bar_items_view(request):
 
 
 @render_with_table_view
-def fizz_view(request):
+def fizz_view(request: WSGIRequest) -> TableContext:
     return TableContext(
         title="Fizz view",
         subtitle=None,
@@ -110,7 +110,7 @@ def fizz_view(request):
 
 
 @render_with_item_view
-def buzz_view(request):
+def buzz_view(request: WSGIRequest) -> ItemContext:
     return ItemContext(
         slug=None,
         title=f"Buzz page",

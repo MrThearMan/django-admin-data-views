@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "django-admin-data-views"
-version = "0.0.2"
+version = "0.0.3"
 description = "Add custom data views to django admin panel."
 authors = [
     "Matti Lamppu <lamppu.matti.akseli@gmail.com>",
@@ -46,7 +46,7 @@ exclude = [
 [tool.poetry.dependencies]
 python = ">=3.8,<4"
 Django = ">=3.2"
-django-settings-holder = ">=0.0.1"
+django-settings-holder = ">=0.0.2"
 
 [tool.poetry.dev-dependencies]
 pytest-cov = "^3.0.0"

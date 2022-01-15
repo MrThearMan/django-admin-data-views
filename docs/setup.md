@@ -33,7 +33,7 @@ admin_site.register(Group, GroupAdmin)
 ```python
 from django.core.handlers.wsgi import WSGIRequest
 from admin_data_views.typing import TableContext, ItemContext
-from admin_data_views.utils import render_with_table_view, render_with_item_view, item_view_link
+from admin_data_views.utils import render_with_table_view, render_with_item_view, ItemLink
 
 @render_with_table_view
 def foo_list_view(request: WSGIRequest) -> TableContext:
@@ -41,8 +41,8 @@ def foo_list_view(request: WSGIRequest) -> TableContext:
         title="Foo items",
         subtitle=None,
         table={
-            "Name": [item_view_link(link_text="Foo", view=foo_list_view, args=(123,)), "1"],
-            "Value": [item_view_link(link_text="Bar", view=foo_list_view, args=(124,)), "2"],
+            "Name": [ItemLink("Foo", idd=123), "1"],
+            "Value": [ItemLink("Bar", idd=124), "2"],
         },
     )
 
@@ -78,9 +78,8 @@ and must return a dictionary matching the `TableContext` TypedDict.
 `render_with_item_view` is used to render the data in an item view. The view takes an argument `request` and any
 number or path arguments, and must return a dictionary matching the `ItemContext` TypedDict.
 
-`item_view_link` is used to add links for the rows in the table view to the items in the items view.
-Note that it takes a reference of the table view, not the item view it is linking to!
-The matching item view is determined from the configuration made in the next step.
+`ItemLink` is used to add links to the table view's items' views. It should be used on the first item in each list.
+Additional kwargs can be provided if the item view needs them.
 
 
 ④ Add configuration to project `settings.py`

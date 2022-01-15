@@ -46,7 +46,7 @@ class AdminSite(admin.AdminSite):
         return custom_paths + super().get_urls()  # noqa
 
     def admin_data_index_view(self, request: WSGIRequest) -> TemplateResponse:
-        app_dict = self.get_maintenance_urls()
+        app_dict = self.get_data_admin_views()
         # Sort the models alphabetically
         app_dict["models"].sort(key=lambda x: x["name"])
 
@@ -61,9 +61,9 @@ class AdminSite(admin.AdminSite):
         request.current_app = self.name
         return TemplateResponse(request, "admin/app_index.html", context)  # noqa
 
-    def get_app_list(self, request):
+    def get_app_list(self, request: WSGIRequest) -> List[AppDict]:
         app_dict = self._build_app_dict(request)
-        app_dict[self.name] = self.get_maintenance_urls()
+        app_dict[self.name] = self.get_data_admin_views()
         # Sort the apps alphabetically.
         app_list = sorted(app_dict.values(), key=lambda x: x["name"].lower())
 
@@ -83,7 +83,7 @@ class AdminSite(admin.AdminSite):
             "view_only": True,
         }
 
-    def get_maintenance_urls(self) -> AppDict:
+    def get_data_admin_views(self) -> AppDict:
         return {
             "name": AdminConfig.verbose_name,
             "app_label": AdminConfig.verbose_name,

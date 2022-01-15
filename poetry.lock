@@ -185,7 +185,7 @@ bcrypt = ["bcrypt"]
 
 [[package]]
 name = "django-settings-holder"
-version = "0.0.1"
+version = "0.0.2"
 description = "Object that allows settings to be accessed with attributes."
 category = "main"
 optional = false
@@ -831,7 +831,7 @@ testing = ["pytest (>=6)", "pytest-checkdocs (>=2.4)", "pytest-flake8", "pytest-
 [metadata]
 lock-version = "1.1"
 python-versions = ">=3.8,<4"
-content-hash = "cce9e0ec8a6e15c1733cfd0c1a467c6cd3afa2c7f832eb6847c38d69c6eb87f0"
+content-hash = "1e9cf7f53eed8334722b39a86bbb5c1793d26e5fef9e58ee3fbc416a08676499"
 
 [metadata.files]
 asgiref = [
@@ -954,8 +954,8 @@ django = [
     {file = "Django-4.0.1.tar.gz", hash = "sha256:2485eea3cc4c3bae13080dee866ebf90ba9f98d1afe8fda89bfb0eb2e218ef86"},
 ]
 django-settings-holder = [
-    {file = "django-settings-holder-0.0.1.tar.gz", hash = "sha256:16da8b3d3718c4c521ae1ae733c9384c5c43e0cf00eb1c11da710305c4cb2b96"},
-    {file = "django_settings_holder-0.0.1-py3-none-any.whl", hash = "sha256:808f668a98726aeac3bdb0555d56abbac901f1da440638c5b545a40af52949e5"},
+    {file = "django-settings-holder-0.0.2.tar.gz", hash = "sha256:48cb849c5c6cf635087a99b0dbcbe4ae8e6bffa1a995e5189b9abd0c01fa18f6"},
+    {file = "django_settings_holder-0.0.2-py3-none-any.whl", hash = "sha256:d1c36218594d5b4977a0469f4aed0a9cd01c1c540cf209570a569a165c355551"},
 ]
 django-stubs = [
     {file = "django-stubs-1.9.0.tar.gz", hash = "sha256:664843091636a917faf5256d028476559dc360fdef9050b6df87ab61b21607bf"},
