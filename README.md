@@ -14,6 +14,7 @@
 ```shell
 pip install django-admin-data-views
 ```
+
 ---
 
 **Documentation**: [https://mrthearman.github.io/django-admin-data-views/](https://mrthearman.github.io/django-admin-data-views/)
