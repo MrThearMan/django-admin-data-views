@@ -23,7 +23,7 @@ class AdminSite(admin.AdminSite):
             path(
                 route=f"{self.name}/",
                 view=self.admin_view(self.admin_data_index_view),
-                name="admin_data_index_view",
+                name="admin-data-index-view",
             )
         ]
         for item in admin_data_settings.URLS:
@@ -86,11 +86,11 @@ class AdminSite(admin.AdminSite):
     def get_data_admin_views(self) -> AppDict:
         return {
             "name": AdminConfig.verbose_name,
-            "app_label": AdminConfig.verbose_name,
+            "app_label": self.name,
             "app_url": f"/admin/{self.name}/",
             "has_module_perms": True,
             "models": [self.add_url(route=item["route"], name=item["name"]) for item in admin_data_settings.URLS],
         }
 
 
-admin_site = AdminSite(name=AdminConfig.name)
+admin_site = AdminSite(name=AdminConfig.name.replace("_", "-"))

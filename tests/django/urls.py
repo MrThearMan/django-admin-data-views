@@ -1,3 +1,5 @@
+from contextlib import suppress
+
 from django.contrib.auth.admin import GroupAdmin, UserAdmin
 from django.contrib.auth.models import Group, User
 from django.core.handlers.wsgi import WSGIRequest
@@ -9,12 +11,11 @@ from admin_data_views.typing import ItemContext, TableContext
 from admin_data_views.utils import ItemLink, render_with_item_view, render_with_table_view
 
 
-call_command("makemigrations")
-call_command("migrate")
-
-
-if not User.objects.filter(username="x", email="user@user.com").exists():
-    User.objects.create_superuser(username="x", email="user@user.com", password="x")
+with suppress(Exception):
+    call_command("makemigrations")
+    call_command("migrate")
+    if not User.objects.filter(username="x", email="user@user.com").exists():
+        User.objects.create_superuser(username="x", email="user@user.com", password="x")
 
 
 admin_site.register(User, UserAdmin)

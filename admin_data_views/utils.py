@@ -1,7 +1,7 @@
 from functools import wraps
 from typing import Any, Callable, List
 
-from django.core.handlers.wsgi import WSGIRequest
+from django.http import HttpRequest
 from django.template.response import TemplateResponse
 from django.urls import reverse
 from django.utils.html import format_html
@@ -20,13 +20,14 @@ __all__ = [
 
 
 def render_with_table_view(
-    func: Callable[[WSGIRequest], TableContext],
-) -> Callable[[WSGIRequest], TemplateResponse]:
+    func: Callable[..., TableContext],
+) -> Callable[..., TemplateResponse]:
     """Render returned context in a table view."""
 
     @wraps(func)
-    def wrapper(request: WSGIRequest) -> TemplateResponse:
-        context = func(request)
+    def wrapper(*args: Any, **kwargs: Any) -> TemplateResponse:
+        request: HttpRequest = args[0]
+        context = func(*args, **kwargs)
         func_name = f"{func.__module__}.{func.__qualname__}"  # noqa
 
         urls: List[URLConfig] = admin_data_settings.URLS
@@ -65,13 +66,13 @@ def render_with_table_view(
 
 
 def render_with_item_view(
-    func: Callable[[WSGIRequest, ...], ItemContext],
-) -> Callable[[WSGIRequest, ...], TemplateResponse]:
+    func: Callable[..., ItemContext],
+) -> Callable[..., TemplateResponse]:
     """Render returned context in an item view."""
 
     @wraps(func)
-    def wrapper(*args, **kwargs) -> TemplateResponse:
-        request: WSGIRequest = args[0]
+    def wrapper(*args: Any, **kwargs: Any) -> TemplateResponse:
+        request: HttpRequest = args[0]
         context = func(*args, **kwargs)
         func_name = f"{func.__module__}.{func.__qualname__}"  # noqa
 
@@ -115,6 +116,3 @@ class ItemLink:
         """
         self.link_item = link_item
         self.kwargs = kwargs
-
-    def __str__(self) -> str:
-        return str(self.link_item)

@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "django-admin-data-views"
-version = "0.0.3"
+version = "0.1.0"
 description = "Add custom data views to django admin panel."
 authors = [
     "Matti Lamppu <lamppu.matti.akseli@gmail.com>",
@@ -64,6 +64,7 @@ pylint = "^2.12.2"
 mkdocs = "^1.2.3"
 pymdown-extensions = "^9.1"
 django-stubs = "^1.9.0"
+beautifulsoup4 = "^4.10.0"
 
 [tool.black]
 line-length = 120
@@ -112,6 +113,7 @@ omit = [
 exclude_lines = [
     "if TYPE_CHECKING:",
     "except ImportError:",
+    "pragma: no cover"
 ]
 
 [tool.django-stubs]
@@ -140,6 +142,7 @@ deps =
 
     pytest-cov
     pytest-django
+    beautifulsoup4
 commands =
     coverage run -m pytest -vv -s --log-cli-level=INFO
 """

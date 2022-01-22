@@ -55,7 +55,7 @@ class SettingsHolder(holder.SettingsHolder):
 
             return val
 
-        return super().perform_import(val, setting)
+        return super().perform_import(val, setting)  # pragma: no cover
 
 
 admin_data_settings = SettingsHolder(
