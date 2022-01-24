@@ -31,23 +31,23 @@ admin_site.register(Group, GroupAdmin)
 ③ Create data functions
 
 ```python
-from django.core.handlers.wsgi import WSGIRequest
+from django.http import HttpRequest
 from admin_data_views.typing import TableContext, ItemContext
 from admin_data_views.utils import render_with_table_view, render_with_item_view, ItemLink
 
 @render_with_table_view
-def foo_list_view(request: WSGIRequest) -> TableContext:
+def foo_list_view(request: HttpRequest) -> TableContext:
     return TableContext(
         title="Foo items",
         subtitle=None,
         table={
-            "Name": [ItemLink("Foo", idd=123), "1"],
-            "Value": [ItemLink("Bar", idd=124), "2"],
+            "Name": [ItemLink("Foo", idd=123), ItemLink("Bar", idd=124)],
+            "Value": ["1", "2"],
         },
     )
 
 @render_with_item_view
-def foo_items_view(request: WSGIRequest, idd: int) -> ItemContext:
+def foo_items_view(request: HttpRequest, idd: int) -> ItemContext:
     return ItemContext(
         slug=idd,
         title=f"This is {idd}",

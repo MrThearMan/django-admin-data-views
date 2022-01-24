@@ -2,8 +2,8 @@ from contextlib import suppress
 
 from django.contrib.auth.admin import GroupAdmin, UserAdmin
 from django.contrib.auth.models import Group, User
-from django.core.handlers.wsgi import WSGIRequest
 from django.core.management import call_command
+from django.http import HttpRequest
 from django.urls import path
 
 from admin_data_views.admin import admin_site
@@ -23,7 +23,7 @@ admin_site.register(Group, GroupAdmin)
 
 
 @render_with_table_view
-def foo_list_view(request: WSGIRequest) -> TableContext:
+def foo_list_view(request: HttpRequest) -> TableContext:
     return TableContext(
         title="Foo items",
         subtitle=None,
@@ -35,7 +35,7 @@ def foo_list_view(request: WSGIRequest) -> TableContext:
 
 
 @render_with_item_view
-def foo_items_view(request: WSGIRequest, idd: int) -> ItemContext:
+def foo_items_view(request: HttpRequest, idd: int) -> ItemContext:
     return ItemContext(
         slug=idd,
         title=f"This is {idd}",
@@ -61,7 +61,7 @@ def foo_items_view(request: WSGIRequest, idd: int) -> ItemContext:
 
 
 @render_with_table_view
-def bar_list_view(request: WSGIRequest) -> TableContext:
+def bar_list_view(request: HttpRequest) -> TableContext:
     return TableContext(
         title="Bar items",
         subtitle=None,
@@ -73,7 +73,7 @@ def bar_list_view(request: WSGIRequest) -> TableContext:
 
 
 @render_with_item_view
-def bar_items_view(request: WSGIRequest) -> ItemContext:
+def bar_items_view(request: HttpRequest) -> ItemContext:
     return ItemContext(
         slug=None,
         title=f"Bar page",
@@ -99,7 +99,7 @@ def bar_items_view(request: WSGIRequest) -> ItemContext:
 
 
 @render_with_table_view
-def fizz_view(request: WSGIRequest) -> TableContext:
+def fizz_view(request: HttpRequest) -> TableContext:
     return TableContext(
         title="Fizz view",
         subtitle=None,
@@ -111,7 +111,7 @@ def fizz_view(request: WSGIRequest) -> TableContext:
 
 
 @render_with_item_view
-def buzz_view(request: WSGIRequest) -> ItemContext:
+def buzz_view(request: HttpRequest) -> ItemContext:
     return ItemContext(
         slug=None,
         title=f"Buzz page",
