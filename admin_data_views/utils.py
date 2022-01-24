@@ -29,33 +29,45 @@ def render_with_table_view(
         request: HttpRequest = args[0]
         context = func(*args, **kwargs)
         func_name = f"{func.__module__}.{func.__qualname__}"  # noqa
-
         urls: List[URLConfig] = admin_data_settings.URLS
-        for item in urls:
+
+        for item in urls:  # pylint: disable=R1702:
             view_name = f"{item['view'].__module__}.{item['view'].__qualname__}"
             if view_name == func_name:
                 context["slug"] = item["route"]  # type: ignore
 
-                # Look for any item links in the rows
+                # Look for any item links in the rows.
                 if item["items"] is not None:
                     item_view_name = item["items"]["name"]
-                    for row in context["table"].values():
-                        first_item = row[0]
 
-                        if isinstance(first_item, ItemLink):
-                            row[0] = format_html(
+                    for header in context["table"]:
+                        for row_no, cell in enumerate(context["table"][header]):
+                            if not isinstance(cell, ItemLink):  # pragma: no cover
+                                continue
+
+                            context["table"][header][row_no] = format_html(  # type: ignore
                                 '<a href="{}">{}</a>',
                                 reverse(
                                     viewname=f"admin:{item_view_name}",
-                                    kwargs=first_item.kwargs,
+                                    kwargs=cell.kwargs,
                                     current_app=admin_site.name,
                                 ),
-                                str(first_item.link_item),
+                                str(cell.link_item),
                             )
-                break
+
+                        break  # Only the first column
+                break  # Stop searching once view is found
 
         else:
             raise ValueError(f"Cannot find '{func_name}' in ADMIN_DATA_VIEWS setting.")
+
+        # Transform the columns into a list of rows.
+        # This way the table is easier to render in the template.
+        context["headers"] = list(context["table"].keys())  # type: ignore
+        context["rows"]: List[List[Any]] = [[] for _ in next(iter(context["table"].values()))]  # type: ignore
+        for column in context["table"].values():
+            for row_no, cell in enumerate(column):
+                context["rows"][row_no].append(cell)  # type: ignore
 
         context.update(admin_site.each_context(request))
         context["app_label"] = AdminConfig.verbose_name  # type: ignore

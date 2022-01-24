@@ -7,7 +7,7 @@ from admin_data_views.utils import render_with_item_view, render_with_table_view
 
 
 def func(request):
-    pass
+    return {}
 
 
 def test_missing_keys_in_admin_data_setting(settings):

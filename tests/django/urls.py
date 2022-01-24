@@ -28,8 +28,8 @@ def foo_list_view(request: WSGIRequest) -> TableContext:
         title="Foo items",
         subtitle=None,
         table={
-            "Name": [ItemLink("Foo", idd=123), "1"],
-            "Value": [ItemLink("Bar", idd=124), "2"],
+            "Name": [ItemLink("Foo", idd=123), ItemLink("Bar", idd=124)],
+            "Value": ["1", "2"],
         },
     )
 
@@ -66,8 +66,8 @@ def bar_list_view(request: WSGIRequest) -> TableContext:
         title="Bar items",
         subtitle=None,
         table={
-            "Fizz": [ItemLink("X"), "1"],
-            "Buzz": [ItemLink("Y"), "2"],
+            "Fizz": [ItemLink("X"), ItemLink("Y")],
+            "Buzz": ["1", "2"],
         },
     )
 
@@ -104,8 +104,8 @@ def fizz_view(request: WSGIRequest) -> TableContext:
         title="Fizz view",
         subtitle=None,
         table={
-            "A": ["X", "1"],
-            "B": ["Y", "2"],
+            "A": ["X", "Y"],
+            "B": ["1", "2"],
         },
     )
 
