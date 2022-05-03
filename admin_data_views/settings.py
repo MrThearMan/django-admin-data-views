@@ -2,7 +2,7 @@ from typing import Any, Dict, List, NamedTuple, Optional, Set, Union
 
 from django.conf import settings
 from django.test.signals import setting_changed
-from settings_holder import holder, reload_settings
+from settings_holder import holder, reload_settings  # pylint: disable=E0401
 
 from .typing import URLConfig
 
