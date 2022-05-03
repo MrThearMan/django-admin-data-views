@@ -65,4 +65,5 @@ admin_data_settings = SettingsHolder(
     removed_settings=REMOVED_SETTINGS,
 )
 
-setting_changed.connect(reload_settings(SETTING_NAME, admin_data_settings))
+reload_admin_data_settings = reload_settings(SETTING_NAME, admin_data_settings)
+setting_changed.connect(reload_admin_data_settings)
