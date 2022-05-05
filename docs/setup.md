@@ -78,7 +78,7 @@ and must return a dictionary matching the `TableContext` TypedDict.
 `render_with_item_view` is used to render the data in an item view. The view takes an argument `request` and any
 number or path arguments, and must return a dictionary matching the `ItemContext` TypedDict.
 
-`ItemLink` is used to add links to the table view's items' views. It should be used on the first item in each list.
+`ItemLink` is used to add links to the table view's items' views. It should be used on the items of the first key in the table.
 Additional kwargs can be provided if the item view needs them.
 
 
