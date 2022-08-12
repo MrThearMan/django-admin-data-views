@@ -6,6 +6,7 @@
 [![GitHub][licence-badge]][licence]
 [![GitHub Last Commit][repo-badge]][repo]
 [![GitHub Issues][issues-badge]][issues]
+[![Downloads][downloads-badge]][pypi]
 [![Python Version][version-badge]][pypi]
 
 ```shell
@@ -24,15 +25,16 @@ Django Admin Data Views enables you to easily add non-model data to the django a
 Data from an API or file can be shown in similar table and item views than regular models.
 
 [coverage-badge]: https://coveralls.io/repos/github/MrThearMan/django-admin-data-views/badge.svg?branch=main
-[status-badge]: https://img.shields.io/github/workflow/status/MrThearMan/django-admin-data-views/Tests
+[status-badge]: https://img.shields.io/github/workflow/status/MrThearMan/django-admin-data-views/Test
 [pypi-badge]: https://img.shields.io/pypi/v/django-admin-data-views
 [licence-badge]: https://img.shields.io/github/license/MrThearMan/django-admin-data-views
 [repo-badge]: https://img.shields.io/github/last-commit/MrThearMan/django-admin-data-views
 [issues-badge]: https://img.shields.io/github/issues-raw/MrThearMan/django-admin-data-views
 [version-badge]: https://img.shields.io/pypi/pyversions/django-admin-data-views
+[downloads-badge]: https://img.shields.io/pypi/dm/django-admin-data-views
 
 [coverage]: https://coveralls.io/github/MrThearMan/django-admin-data-views?branch=main
-[status]: https://github.com/MrThearMan/django-admin-data-views/actions/workflows/main.yml
+[status]: https://github.com/MrThearMan/django-admin-data-views/actions/workflows/test.yml
 [pypi]: https://pypi.org/project/django-admin-data-views
 [licence]: https://github.com/MrThearMan/django-admin-data-views/blob/main/LICENSE
 [repo]: https://github.com/MrThearMan/django-admin-data-views/commits/main
