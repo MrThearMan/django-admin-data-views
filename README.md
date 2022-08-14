@@ -27,7 +27,7 @@ Django Admin Data Views enables you to easily add non-model data to the django a
 Data from an API or file can be shown in similar table and item views than regular models.
 
 
-![Example](docs/img/example.png)
+![Example](https://github.com/MrThearMan/django-admin-data-views/raw/main/docs/img/example.png?raw=true)
 
 
 [coverage-badge]: https://coveralls.io/repos/github/MrThearMan/django-admin-data-views/badge.svg?branch=main
