@@ -1,96 +1,119 @@
-from typing import List
+from typing import Callable, List, Union
 
 from django.contrib import admin
-from django.core.handlers.wsgi import WSGIRequest
+from django.http import HttpRequest
 from django.template.response import TemplateResponse
-from django.urls import URLResolver, path
+from django.urls import URLPattern, URLResolver, path
 
-from .apps import AdminConfig
 from .settings import admin_data_settings
 from .typing import AppDict, AppModel
 
 
 __all__ = [
-    "admin_site",
+    "add_url",
+    "get_data_admin_views",
 ]
 
 
-class AdminSite(admin.AdminSite):
-    """Custom admin panel to add rooms and other information to it."""
+def add_url(baseroute: str, route: str, name: str) -> AppModel:
+    return {
+        "name": " ".join([val.capitalize() for val in name.split("_")]),
+        "object_name": name.lower(),
+        "perms": {"add": False, "change": False, "delete": False, "view": True},
+        "admin_url": f"/admin/{baseroute}/{route}/",
+        "add_url": None,
+        "view_only": True,
+    }
 
-    def get_urls(self) -> List[URLResolver]:
-        custom_paths = [
+
+def get_data_admin_views() -> AppDict:
+    baseroute = admin_data_settings.NAME.lower().replace(" ", "-")
+    return {
+        "name": admin_data_settings.NAME,
+        "app_label": baseroute,
+        "app_url": f"/admin/{baseroute}/",
+        "has_module_perms": True,
+        "models": [
+            add_url(baseroute=baseroute, route=item["route"], name=item["name"]) for item in admin_data_settings.URLS
+        ],
+    }
+
+
+# Added to site
+
+
+def get_app_list(self: admin.AdminSite, request: HttpRequest) -> List[AppDict]:
+    baseroute = admin_data_settings.NAME.lower().replace(" ", "-")
+    app_dict = self._build_app_dict(request)  # pylint: disable=protected-access
+    app_dict[baseroute] = get_data_admin_views()
+    # Sort the apps alphabetically.
+    app_list = sorted(app_dict.values(), key=lambda x: x["name"].lower())
+
+    # Sort the models alphabetically within each app.
+    for app in app_list:
+        app["models"].sort(key=lambda x: x["name"])
+
+    return app_list
+
+
+def admin_data_index_view(self: admin.AdminSite, request: HttpRequest) -> TemplateResponse:
+    app_dict = get_data_admin_views()
+    # Sort the models alphabetically
+    app_dict["models"].sort(key=lambda x: x["name"])
+
+    context = {
+        **self.each_context(request),
+        "title": app_dict["name"],
+        "subtitle": None,
+        "app_list": [app_dict],
+        "app_label": admin_data_settings.NAME,
+    }
+
+    request.current_app = admin_data_settings.NAME
+    return TemplateResponse(request, "admin/app_index.html", context)
+
+
+def get_admin_data_urls(self: admin.AdminSite) -> List[Union[URLResolver, URLPattern]]:
+    baseroute = admin_data_settings.NAME.lower().replace(" ", "-")
+    custom_paths = [
+        path(
+            route=f"{baseroute}/",
+            view=self.admin_view(self.admin_data_index_view),
+            name="admin-data-index-view",
+        )
+    ]
+    for item in admin_data_settings.URLS:
+        custom_paths.append(
             path(
-                route=f"{self.name}/",
-                view=self.admin_view(self.admin_data_index_view),
-                name="admin-data-index-view",
+                route=f"{baseroute}/{item['route']}/",
+                view=self.admin_view(item["view"]),
+                name=item["name"],
             )
-        ]
-        for item in admin_data_settings.URLS:
+        )
+        if item["items"] is not None:
             custom_paths.append(
                 path(
-                    route=f"{self.name}/{item['route']}/",
-                    view=self.admin_view(item["view"]),
-                    name=item["name"],
+                    route=f"{baseroute}/{item['route']}/{item['items']['route']}/",
+                    view=self.admin_view(item["items"]["view"]),
+                    name=item["items"]["name"],
                 )
             )
-            if item["items"] is not None:
-                custom_paths.append(
-                    path(
-                        route=f"{self.name}/{item['route']}/{item['items']['route']}/",
-                        view=self.admin_view(item["items"]["view"]),
-                        name=item["items"]["name"],
-                    )
-                )
 
-        return custom_paths + super().get_urls()  # noqa
-
-    def admin_data_index_view(self, request: WSGIRequest) -> TemplateResponse:
-        app_dict = self.get_data_admin_views()
-        # Sort the models alphabetically
-        app_dict["models"].sort(key=lambda x: x["name"])
-
-        context = {
-            **self.each_context(request),
-            "title": app_dict["name"],
-            "subtitle": None,
-            "app_list": [app_dict],
-            "app_label": AdminConfig.verbose_name,
-        }
-
-        request.current_app = self.name
-        return TemplateResponse(request, "admin/app_index.html", context)  # noqa
-
-    def get_app_list(self, request: WSGIRequest) -> List[AppDict]:
-        app_dict = self._build_app_dict(request)
-        app_dict[self.name] = self.get_data_admin_views()
-        # Sort the apps alphabetically.
-        app_list = sorted(app_dict.values(), key=lambda x: x["name"].lower())
-
-        # Sort the models alphabetically within each app.
-        for app in app_list:
-            app["models"].sort(key=lambda x: x["name"])
-
-        return app_list
-
-    def add_url(self, route: str, name: str) -> AppModel:
-        return {
-            "name": " ".join([val.capitalize() for val in name.split("_")]),
-            "object_name": name.lower(),
-            "perms": {"add": False, "change": False, "delete": False, "view": True},
-            "admin_url": f"/admin/{self.name}/{route}/",
-            "add_url": None,
-            "view_only": True,
-        }
-
-    def get_data_admin_views(self) -> AppDict:
-        return {
-            "name": AdminConfig.verbose_name,
-            "app_label": self.name,
-            "app_url": f"/admin/{self.name}/",
-            "has_module_perms": True,
-            "models": [self.add_url(route=item["route"], name=item["name"]) for item in admin_data_settings.URLS],
-        }
+    return custom_paths
 
 
-admin_site = AdminSite(name=AdminConfig.name.replace("_", "-"))
+def get_urls(
+    original_get_urls: Callable[[], List[Union[URLResolver, URLPattern]]],
+) -> Callable[[admin.AdminSite], List[Union[URLResolver, URLPattern]]]:
+    def get_urls_inner(self: admin.AdminSite) -> List[Union[URLResolver, URLPattern]]:
+        return self.get_admin_data_urls() + original_get_urls()
+
+    return get_urls_inner
+
+
+# Patch the admin site object with data admin view methods
+# pylint: disable=no-value-for-parameter
+admin.site.get_app_list = get_app_list.__get__(admin.site, admin.AdminSite)
+admin.site.admin_data_index_view = admin_data_index_view.__get__(admin.site, admin.AdminSite)
+admin.site.get_admin_data_urls = get_admin_data_urls.__get__(admin.site, admin.AdminSite)
+admin.site.get_urls = get_urls(admin.site.get_urls).__get__(admin.site, admin.AdminSite)

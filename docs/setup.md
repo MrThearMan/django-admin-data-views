@@ -1,8 +1,10 @@
 ## Setup
 
-① Add `admin_data_views` to installed apps after `django.contrib.admin`
+① Add `admin_data_views` to installed in `settings.py` apps after `django.contrib.admin`
 
 ```python
+# project/settings.py
+
 INSTALLED_APPS = [
     ...
     "django.contrib.admin",
@@ -11,24 +13,7 @@ INSTALLED_APPS = [
 ]
 ```
 
-> `django.contrib.admin` and its [dependencies][admin-deps] need to be installed for `admin_data_views` to work
-
-
-② (Optional) Add any models that would otherwise be registered
-in `django.contrib.admin.site` to `admin_data_views.admin.admin_site`
-
-```python
-from django.contrib.auth.models import Group, User
-from django.contrib.auth.admin import GroupAdmin, UserAdmin
-from admin_data_views.admin import admin_site
-
-
-admin_site.register(User, UserAdmin)
-admin_site.register(Group, GroupAdmin)
-```
-
-
-③ Create data functions
+② Create data functions
 
 ```python
 from django.http import HttpRequest
@@ -72,20 +57,25 @@ def foo_items_view(request: HttpRequest, idd: int) -> ItemContext:
     )
 ```
 
-`render_with_table_view` is used to render the data in a table view. The view takes a single argument `request`,
-and must return a dictionary matching the `TableContext` TypedDict.
+`render_with_table_view` is used to render the data in a table view.
+The view takes a single argument `request`, and must return a dictionary
+matching the `TableContext` TypedDict.
 
-`render_with_item_view` is used to render the data in an item view. The view takes an argument `request` and any
-number or path arguments, and must return a dictionary matching the `ItemContext` TypedDict.
+`render_with_item_view` is used to render the data in an item view.
+The view takes an argument `request` and any number or path arguments,
+and must return a dictionary matching the `ItemContext` TypedDict.
 
-`ItemLink` is used to add links to the table view's items' views. It should be used on the items of the first key in the table.
+`ItemLink` is used to add links to the table view's items' views.
+It should be used on the items of the first key in the table.
 Additional kwargs can be provided if the item view needs them.
 
-
-④ Add configuration to project `settings.py`
+③ Add configuration to project `settings.py`
 
 ```python
+# project/settings.py
+
 ADMIN_DATA_VIEWS = {
+    "NAME": "Admin Data Views",  # Default
     "URLS": [
         {
             "route": "foo/",
@@ -97,13 +87,21 @@ ADMIN_DATA_VIEWS = {
                 "name": "foo_item",
             },
         },
-    ]
+    ],
 }
 ```
 
+④ Add admin site urls to urlpatterns in project `urls.py`
+
+```python
+# project/urls.py
+from django.contrib import admin
+from django.urls import path
+
+urlpatterns = [path("admin/", admin.site.urls)]
+```
 
 ⑤ Now the views should be available in the admin panel under the `ADMIN DATA VIEWS` section.
-
 
 ![Front page](img/frontpage.png)
 

@@ -2,7 +2,7 @@ from typing import Any, Dict, List, NamedTuple, Optional, Set, Union
 
 from django.conf import settings
 from django.test.signals import setting_changed
-from settings_holder import holder, reload_settings  # pylint: disable=E0401
+from settings_holder import holder, reload_settings
 
 from .typing import URLConfig
 
@@ -17,6 +17,9 @@ class AdminDataViewsSettings(NamedTuple):
     # URLs for top-level cateories. These will appear in the sidebar.
     # URLs for item pages. These will not appear in the sidebar.
     URLS: List[URLConfig] = []
+    #
+    # Name of the admin data views section in admin panel
+    NAME: str = "Admin Data Views"
 
 
 SETTING_NAME = "ADMIN_DATA_VIEWS"
@@ -40,7 +43,7 @@ class SettingsHolder(holder.SettingsHolder):
                     raise RuntimeError(f"Missing keys in ADMIN_DATA_VIEWS[{i}]: {missing}")
 
                 item["route"] = item["route"].rstrip("/").lstrip("/")
-                item["view"] = self.import_from_string(item["view"], setting)  # type: ignore
+                item["view"] = self.import_from_string(item["view"], setting)
 
                 if item.get("items") is None:
                     item["items"] = None
@@ -51,7 +54,7 @@ class SettingsHolder(holder.SettingsHolder):
                     raise RuntimeError(f"Missing keys in ADMIN_DATA_VIEWS[{i}]['items']: {missing}")
 
                 item["items"]["route"] = item["items"]["route"].rstrip("/").lstrip("/")
-                item["items"]["view"] = self.import_from_string(item["items"]["view"], setting)  # type: ignore
+                item["items"]["view"] = self.import_from_string(item["items"]["view"], setting)
 
             return val
 

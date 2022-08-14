@@ -1,12 +1,11 @@
-from django.contrib.admin import apps
+from django.apps import AppConfig
 
 
 __all__ = [
-    "AdminConfig",
+    "AdminDataViewsConfig",
 ]
 
 
-class AdminConfig(apps.AdminConfig):
+class AdminDataViewsConfig(AppConfig):
     name = "admin_data_views"
     verbose_name = "Admin Data Views"
-    default_site = "admin_data_views.admin.AdminSite"

@@ -53,7 +53,7 @@ def test_missing_function_for_table_view_in_admin_data_setting(settings):
     }
 
     with pytest.raises(ValueError, match="Cannot find 'tests.test_utils.func' in ADMIN_DATA_VIEWS setting."):
-        render_with_table_view(func)(None)  # noqa
+        render_with_table_view(func)(None)
 
 
 def test_missing_function_for_item_view_in_from_admin_data_setting(settings):
@@ -68,4 +68,4 @@ def test_missing_function_for_item_view_in_from_admin_data_setting(settings):
     }
 
     with pytest.raises(ValueError, match="Cannot find 'tests.test_utils.func' in ADMIN_DATA_VIEWS setting."):
-        render_with_item_view(func)(None)  # noqa
+        render_with_item_view(func)(None)
