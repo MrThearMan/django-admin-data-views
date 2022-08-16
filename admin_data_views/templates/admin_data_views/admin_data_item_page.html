@@ -4,6 +4,13 @@
 {% block extrastyle %}
   {{ block.super }}
   <link rel="stylesheet" type="text/css" href="{% static "admin/css/forms.css" %}">
+  <style>
+  @media (min-width: 895px) {
+      .adv-dict-label {
+          float: none!important;
+      }
+  }
+  </style>
 {% endblock %}
 
 {% block coltype %}colM{% endblock %}
@@ -15,7 +22,9 @@
 <div class="breadcrumbs">
 <a href="{% url 'admin:index' %}">{% translate 'Home' %}</a>
 &rsaquo; <a href="{% url 'admin:admin-data-index-view' %}">{{ app_label|capfirst }}</a>
+{% if category_slug %}
 &rsaquo; <a href="{{ category_url }}">{{ category_slug|capfirst }}</a>
+{% endif %}
 &rsaquo; {{ slug|capfirst }}
 </div>
 {% endblock %}
@@ -39,42 +48,16 @@
           {% for key, value in section.fields.items %}
           <div class="form-row">
             {% if value|get_type == "dict" %}
-            <div>
-              <label class="required">{{ key|capfirst }}</label>
-              <div style="float: left;">
-              {% for k, v in value.items %}
-                <label class="required" for="id-{{ k }}" style="float: none;display: inline-block">{{ k|capfirst }}</label>
-                {% if v|length > 40 %}
-                <textarea class="vTextField" id="id-{{ k }}" rows="6" disabled>{{ v|safe }}</textarea>
-                {% else %}
-                <input type="text" value="{{ v|safe }}" class="vTextField" id="id-{{ k }}" disabled>
-                {% endif %}
-                <br>
-              {% endfor %}
-              </div>
-            </div>
+            {% include 'admin_data_views/dict_item.html' with label=key items=value only %}
             {% elif value|get_type == "list" %}
-              <label class="required">{{ key|capfirst }}</label>
-              <div style="float: left;">
-              {% for v in value %}
-                {% if v|length > 40 %}
-                <textarea class="vTextField" rows="6" disabled>{{ v|safe }}</textarea>
-                {% else %}
-                <input type="text" value="{{ v|safe }}" class="vTextField" disabled>
-                {% endif %}
-                <br>
-              {% endfor %}
-              </div>
+            {% include 'admin_data_views/list_item.html' with label=key items=value only %}
             {% else %}
-            <div class="fieldBox field-{{ key }}">
-              <label class="required" for="id-{{ key }}">{{ key|capfirst }}</label>
-              {% if value|length > 40 %}
-              <textarea class="vTextField" id="id-{{ key }}" rows="6" disabled>{{ value|safe }}</textarea>
-              {% else %}
-              <input type="text" value="{{ value|safe }}" class="vTextField" id="id-{{ key }}" disabled>
-              {% endif %}
+            <div class="fieldBox">
+              <label class="required">{{ key|capfirst }}</label>
+              {% include 'admin_data_views/item.html' with value=value only %}
             </div>
             {% endif %}
+            <br>
           </div>
           {% endfor %}
         </fieldset>

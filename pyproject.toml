@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "django-admin-data-views"
-version = "0.2.0"
+version = "0.2.1"
 description = "Add custom data views to django admin panel."
 authors = [
     "Matti Lamppu <lamppu.matti.akseli@gmail.com>",
@@ -81,8 +81,6 @@ ignore-paths = [
 
 [tool.pylint.messages_control]
 disable = [
-    "bad-continuation",
-    "bad-whitespace",
     "missing-module-docstring",
     "missing-class-docstring",
     "missing-function-docstring",

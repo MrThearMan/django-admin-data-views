@@ -1,0 +1,21 @@
+{% load i18n static admin_data_utils %}
+
+{% if label != "" %}
+<label class="required adv-dict-label">{{ label|capfirst }}</label>
+{% endif %}
+
+<div style="float: left;">
+  {% for key, value in items.items %}
+    {% if value|get_type == "dict" %}
+    {% include 'admin_data_views/dict_item.html' with label=key items=value only %}
+    {% elif value|get_type == "list" %}
+    {% include 'admin_data_views/list_item.html' with label=key items=value only %}
+    {% else %}
+    <div class="fieldBox" style="float: none">
+      <label class="required" style="float: none;display: inline-block">{{ key|capfirst }}</label>
+      {% include 'admin_data_views/item.html' with value=value only %}
+    </div>
+    {% endif %}
+    <br>
+{% endfor %}
+</div>

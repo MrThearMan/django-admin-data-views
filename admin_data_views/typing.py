@@ -40,6 +40,15 @@ class TableContext(TypedDict):
     table: Dict[str, List[Any]]
 
 
+class TableViewContext(TypedDict):
+    slug: str
+    title: str
+    subtitle: Optional[str]
+    app_label: str
+    headers: List[str]
+    rows: List[List[Any]]
+
+
 class SectionData(TypedDict):
     name: Optional[str]
     description: Optional[str]
@@ -52,6 +61,15 @@ class ItemContext(TypedDict):
     subtitle: Optional[str]
     image: Optional[str]
     data: List[SectionData]
+
+
+class ItemContextLabeled(ItemContext):
+    app_label: str
+
+
+class ItemViewContext(ItemContextLabeled, total=False):
+    category_slug: str
+    category_url: str
 
 
 class ItemConfig(TypedDict):

@@ -1,0 +1,5 @@
+{% if value|length > 40 %}
+<textarea type="text" rows="6" class="vTextField" disabled>{{ value|safe }}</textarea>
+{% else %}
+<input type="text" value="{{ value|safe }}" class="vTextField" disabled>
+{% endif %}
