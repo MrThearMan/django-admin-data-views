@@ -34,10 +34,14 @@ class AppDict(TypedDict):
     models: List[AppModel]
 
 
-class TableContext(TypedDict):
+class TableContextBase(TypedDict):
     title: str
-    subtitle: Optional[str]
     table: Dict[str, List[Any]]
+
+
+class TableContext(TableContextBase, total=False):
+    subtitle: str
+    extra_context: Dict[str, Any]
 
 
 class TableViewContext(TypedDict):
@@ -55,12 +59,16 @@ class SectionData(TypedDict):
     fields: Dict[str, Any]
 
 
-class ItemContext(TypedDict):
+class ItemContextBase(TypedDict):
     slug: Any
     title: str
-    subtitle: Optional[str]
-    image: Optional[str]
     data: List[SectionData]
+
+
+class ItemContext(ItemContextBase, total=False):
+    image: str
+    subtitle: str
+    extra_context: Dict[str, Any]
 
 
 class ItemContextLabeled(ItemContext):

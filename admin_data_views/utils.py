@@ -38,7 +38,7 @@ def render_with_table_view(
                     subtitle=context.get("subtitle"),
                     app_label=admin_data_settings.NAME,
                     headers=list(context["table"].keys()),
-                    rows=[[] for _ in context["table"].values()],
+                    rows=[],
                 )
 
                 # Transform the table columns into rows.
@@ -56,6 +56,9 @@ def render_with_table_view(
                                 str(cell.link_item),
                             )
 
+                        if len(table_context["rows"]) <= row_no:
+                            table_context["rows"].append([])
+
                         table_context["rows"][row_no].append(cell)
 
                 break  # Stop searching once view is found
@@ -64,6 +67,7 @@ def render_with_table_view(
 
         request: HttpRequest = args[0]
         table_context.update(admin.site.each_context(request))
+        table_context = {**context.get("extra_context", {}), **table_context}
         request.current_app = admin_data_settings.NAME
         return TemplateResponse(request, "admin_data_views/admin_data_table_page.html", table_context)
 
@@ -117,6 +121,7 @@ def render_with_item_view(
 
         request: HttpRequest = args[0]
         item_context.update(admin.site.each_context(request))
+        item_context = {**context.get("extra_context", {}), **item_context}
         request.current_app = admin_data_settings.NAME
         return TemplateResponse(request, "admin_data_views/admin_data_item_page.html", item_context)
 

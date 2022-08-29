@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "django-admin-data-views"
-version = "0.2.1"
+version = "0.2.2"
 description = "Add custom data views to django admin panel."
 authors = [
     "Matti Lamppu <lamppu.matti.akseli@gmail.com>",

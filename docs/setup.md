@@ -21,10 +21,9 @@ from admin_data_views.typing import TableContext, ItemContext
 from admin_data_views.utils import render_with_table_view, render_with_item_view, ItemLink
 
 @render_with_table_view
-def foo_list_view(request: HttpRequest) -> TableContext:
+def foo_list_view(request: HttpRequest, **kwargs) -> TableContext:
     return TableContext(
         title="Foo items",
-        subtitle=None,
         table={
             "Name": [ItemLink("Foo", idd=123), ItemLink("Bar", idd=124)],
             "Value": ["1", "2"],
@@ -32,12 +31,10 @@ def foo_list_view(request: HttpRequest) -> TableContext:
     )
 
 @render_with_item_view
-def foo_items_view(request: HttpRequest, idd: int) -> ItemContext:
+def foo_items_view(request: HttpRequest, idd: int, **kwargs) -> ItemContext:
     return ItemContext(
         slug=idd,
         title=f"This is {idd}",
-        subtitle=None,
-        image=None,
         data=[
             {
                 "name": None,
@@ -68,6 +65,9 @@ and must return a dictionary matching the `ItemContext` TypedDict.
 `ItemLink` is used to add links to the table view's items' views.
 It should be used on the items of the first key in the table.
 Additional kwargs can be provided if the item view needs them.
+
+`kwargs` can contain additional arguments passed to `admin.site.urls`
+in urlpatterns.
 
 ③ Add configuration to project `settings.py`
 
