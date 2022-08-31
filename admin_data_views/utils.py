@@ -1,5 +1,4 @@
 from functools import wraps
-from typing import Any, Callable
 
 from django.contrib import admin
 from django.http import HttpRequest
@@ -8,7 +7,7 @@ from django.urls import reverse
 from django.utils.html import format_html
 
 from .settings import admin_data_settings
-from .typing import ItemContext, ItemViewContext, TableContext, TableViewContext, URLConfig
+from .typing import Any, Callable, ItemContext, ItemViewContext, TableContext, TableViewContext, URLConfig
 
 
 __all__ = [

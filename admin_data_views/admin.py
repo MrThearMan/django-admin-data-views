@@ -1,12 +1,10 @@
-from typing import Callable, List, Union
-
 from django.contrib import admin
 from django.http import HttpRequest
 from django.template.response import TemplateResponse
 from django.urls import URLPattern, URLResolver, path
 
 from .settings import admin_data_settings
-from .typing import AppDict, AppModel
+from .typing import Any, AppDict, AppModel, Callable, List, Union
 
 
 __all__ = [
@@ -56,18 +54,19 @@ def get_app_list(self: admin.AdminSite, request: HttpRequest) -> List[AppDict]:
     return app_list
 
 
-def admin_data_index_view(self: admin.AdminSite, request: HttpRequest) -> TemplateResponse:
+def admin_data_index_view(self: admin.AdminSite, request: HttpRequest, **kwargs: Any) -> TemplateResponse:
     app_dict = get_data_admin_views()
     # Sort the models alphabetically
     app_dict["models"].sort(key=lambda x: x["name"])
 
     context = {
-        **self.each_context(request),
         "title": app_dict["name"],
         "subtitle": None,
         "app_list": [app_dict],
         "app_label": admin_data_settings.NAME,
     }
+    context.update(self.each_context(request))
+    context.update(kwargs.get("extra_context", {}))
 
     request.current_app = admin_data_settings.NAME
     return TemplateResponse(request, "admin/app_index.html", context)
