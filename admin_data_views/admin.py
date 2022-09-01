@@ -43,7 +43,15 @@ def get_data_admin_views() -> AppDict:
 def get_app_list(self: admin.AdminSite, request: HttpRequest) -> List[AppDict]:
     baseroute = admin_data_settings.NAME.lower().replace(" ", "-")
     app_dict = self._build_app_dict(request)  # pylint: disable=protected-access
-    app_dict[baseroute] = get_data_admin_views()
+
+    data_admin_views = get_data_admin_views()
+
+    # Extend models in an already existing app
+    if baseroute in app_dict:
+        app_dict[baseroute]["models"].extend(data_admin_views["models"])  # pragma: no cover
+    else:
+        app_dict[baseroute] = data_admin_views
+
     # Sort the apps alphabetically.
     app_list = sorted(app_dict.values(), key=lambda x: x["name"].lower())
 

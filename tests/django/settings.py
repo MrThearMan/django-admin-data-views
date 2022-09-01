@@ -1,4 +1,3 @@
-from os import environ
 from pathlib import Path
 
 from django.core.management.utils import get_random_secret_key
@@ -19,6 +18,8 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    #
+    "tests.myapp",
 ]
 
 MIDDLEWARE = [
@@ -102,6 +103,7 @@ USE_TZ = True
 STATIC_URL = "/static/"
 
 ADMIN_DATA_VIEWS = {
+    # "NAME": "myapp",
     "URLS": [
         {
             "route": "foo/",
