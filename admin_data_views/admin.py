@@ -2,6 +2,7 @@ from django.contrib import admin
 from django.http import HttpRequest
 from django.template.response import TemplateResponse
 from django.urls import URLPattern, URLResolver, path
+from django.utils.translation import gettext
 
 from .settings import admin_data_settings
 from .typing import Any, AppDict, AppModel, Callable, List, Union
@@ -40,17 +41,24 @@ def get_data_admin_views() -> AppDict:
 # Added to site
 
 
-def get_app_list(self: admin.AdminSite, request: HttpRequest) -> List[AppDict]:
+def get_app_list(self: admin.AdminSite, request: HttpRequest, *args) -> List[AppDict]:
     baseroute = admin_data_settings.NAME.lower().replace(" ", "-")
-    app_dict = self._build_app_dict(request)  # pylint: disable=protected-access
+    app_dict = self._build_app_dict(request, *args) or {}  # pylint: disable=protected-access
 
-    data_admin_views = get_data_admin_views()
+    if baseroute not in app_dict and admin_data_settings.NAME in args:
+        app_dict = {baseroute: app_dict}
 
-    # Extend models in an already existing app
-    if baseroute in app_dict:
-        app_dict[baseroute]["models"].extend(data_admin_views["models"])  # pragma: no cover
-    else:
-        app_dict[baseroute] = data_admin_views
+    if not args or admin_data_settings.NAME in args:
+        data_admin_views = get_data_admin_views()
+
+        # Extend models in an already existing app
+        if baseroute in app_dict and "models" in app_dict[baseroute]:
+            app_dict[baseroute]["models"].extend(data_admin_views["models"])  # pragma: no cover
+        else:
+            app_dict[baseroute] = data_admin_views
+
+    if admin_data_settings.NAME in args:
+        app_dict = {baseroute: app_dict[baseroute]}
 
     # Sort the apps alphabetically.
     app_list = sorted(app_dict.values(), key=lambda x: x["name"].lower())
@@ -63,14 +71,11 @@ def get_app_list(self: admin.AdminSite, request: HttpRequest) -> List[AppDict]:
 
 
 def admin_data_index_view(self: admin.AdminSite, request: HttpRequest, **kwargs: Any) -> TemplateResponse:
-    app_dict = get_data_admin_views()
-    # Sort the models alphabetically
-    app_dict["models"].sort(key=lambda x: x["name"])
-
+    app_list = self.get_app_list(request, admin_data_settings.NAME)
     context = {
-        "title": app_dict["name"],
+        "title": gettext("%(app)s administration") % {"app": app_list[0]["name"]},
         "subtitle": None,
-        "app_list": [app_dict],
+        "app_list": app_list,
         "app_label": admin_data_settings.NAME,
     }
     context.update(self.each_context(request))
