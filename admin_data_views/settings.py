@@ -1,8 +1,7 @@
-from django.conf import settings
 from django.test.signals import setting_changed
 from settings_holder import holder, reload_settings
 
-from .typing import Any, Dict, List, NamedTuple, Optional, Set, Union, URLConfig
+from .typing import Any, Dict, List, NamedTuple, Set, Union, URLConfig
 
 
 __all__ = [
@@ -12,7 +11,7 @@ __all__ = [
 
 class AdminDataViewsSettings(NamedTuple):
     #
-    # URLs for top-level cateories. These will appear in the sidebar.
+    # URLs for top-level categories. These will appear in the sidebar.
     # URLs for item pages. These will not appear in the sidebar.
     URLS: List[URLConfig] = []
     #
@@ -21,8 +20,6 @@ class AdminDataViewsSettings(NamedTuple):
 
 
 SETTING_NAME = "ADMIN_DATA_VIEWS"
-
-USER_SETTINGS: Optional[Dict[str, Any]] = getattr(settings, SETTING_NAME, None)
 
 DEFAULTS: Dict[str, Any] = AdminDataViewsSettings()._asdict()
 
@@ -60,7 +57,7 @@ class SettingsHolder(holder.SettingsHolder):
 
 
 admin_data_settings = SettingsHolder(
-    user_settings=USER_SETTINGS,
+    setting_name=SETTING_NAME,
     defaults=DEFAULTS,
     import_strings=IMPORT_STRINGS,
     removed_settings=REMOVED_SETTINGS,
