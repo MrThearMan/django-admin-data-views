@@ -1,5 +1,11 @@
-{% if value|length > 40 %}
-<textarea type="text" rows="6" class="vTextField" disabled>{{ value|safe }}</textarea>
-{% else %}
-<input type="text" value="{{ value|safe }}" class="vTextField" disabled>
-{% endif %}
+<div class="adv-item">
+  {% if value.0|length > 40 %}
+    <textarea type="text" rows="6" disabled>{{ value.0|safe }}</textarea>
+  {% else %}
+    <input type="text" value="{{ value.0|safe }}" disabled>
+  {% endif %}
+
+  {% if value.1 %}
+    <div class="help">{{ value.1|safe }}</div>
+  {% endif %}
+</div>

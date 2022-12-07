@@ -34,8 +34,6 @@ def foo_items_view(request: HttpRequest, idd: int) -> ItemContext:
     return ItemContext(
         slug=idd,
         title=f"This is {idd}",
-        subtitle=None,
-        image=None,
         data=[
             {
                 "name": None,
@@ -59,7 +57,6 @@ def foo_items_view(request: HttpRequest, idd: int) -> ItemContext:
 def bar_list_view(request: HttpRequest) -> TableContext:
     return TableContext(
         title="Bar items",
-        subtitle=None,
         table={
             "Fizz": [ItemLink("X"), ItemLink("Y")],
             "Buzz": ["1", "2"],
@@ -72,8 +69,6 @@ def bar_items_view(request: HttpRequest) -> ItemContext:
     return ItemContext(
         slug=None,
         title=f"Bar page",
-        subtitle=None,
-        image=None,
         data=[
             {
                 "name": None,
@@ -97,7 +92,6 @@ def bar_items_view(request: HttpRequest) -> ItemContext:
 def fizz_view(request: HttpRequest) -> TableContext:
     return TableContext(
         title="Fizz view",
-        subtitle=None,
         table={
             "A": ["X", "Y"],
             "B": ["1", "2"],
@@ -110,14 +104,147 @@ def buzz_view(request: HttpRequest) -> ItemContext:
     return ItemContext(
         slug=None,
         title=f"Buzz page",
-        subtitle=None,
-        image=None,
         data=[
             {
                 "name": None,
                 "description": None,
                 "fields": {
                     "Foo": "Bar",
+                },
+            },
+        ],
+    )
+
+
+@render_with_item_view
+def complex_view(request: HttpRequest) -> ItemContext:
+    return ItemContext(
+        slug="complex",
+        title="This is complex",
+        image="https://images.pexels.com/photos/355508/pexels-photo-355508.jpeg",
+        data=[
+            {
+                "name": None,
+                "description": None,
+                "fields": {
+                    "foo": "bar",
+                    "list": ["bar", 1],
+                    "title": {
+                        "plain": "Send Money",
+                    },
+                    "fieldset": [
+                        {
+                            "label": {
+                                "plain": "Personal Info Section",
+                            },
+                            "fieldset": [
+                                {
+                                    "field": [
+                                        {
+                                            "label": {
+                                                "plain": "First Name",
+                                            },
+                                            "value": {
+                                                "plain": "Bob",
+                                            },
+                                            "id": "a_1",
+                                        },
+                                        {
+                                            "label": {
+                                                "plain": "Last Name",
+                                            },
+                                            "value": {
+                                                "plain": "Hogan",
+                                            },
+                                            "id": "a_2",
+                                        },
+                                    ],
+                                    "id": "a_8",
+                                }
+                            ],
+                            "id": "a_5",
+                        },
+                        {
+                            "label": {
+                                "plain": "Billing Details Section",
+                            },
+                            "fieldset": {
+                                "field": {
+                                    "choices": {
+                                        "choice": {
+                                            "label": {
+                                                "plain": "Gift",
+                                            },
+                                            "id": "a_17",
+                                            "switch": "",
+                                        },
+                                    },
+                                    "label": {
+                                        "plain": "Choose a category:",
+                                    },
+                                    "value": {
+                                        "plain": "Gift",
+                                    },
+                                    "id": "a_14",
+                                },
+                                "fieldset": {
+                                    "label": {
+                                        "plain": "",
+                                    },
+                                    "field": [
+                                        {
+                                            "choices": {
+                                                "choice": {
+                                                    "label": {
+                                                        "plain": "Other",
+                                                    },
+                                                    "id": "a_25",
+                                                    "switch": "",
+                                                }
+                                            },
+                                            "label": {
+                                                "plain": "Amount",
+                                            },
+                                            "value": {
+                                                "plain": "Other",
+                                            },
+                                            "id": "a_21",
+                                        },
+                                        {
+                                            "label": {
+                                                "plain": "Other Amount",
+                                            },
+                                            "value": {
+                                                "plain": "200",
+                                            },
+                                            "id": "a_20",
+                                        },
+                                    ],
+                                    "id": "a_26",
+                                },
+                                "id": "a_13",
+                            },
+                            "id": "a_12",
+                        },
+                    ],
+                },
+                "help_texts": {
+                    "foo": "this is bar",
+                    "list": "this is a list",
+                    "title": {
+                        "plain": "Plain title",
+                    },
+                    "fieldset": {
+                        "label": {
+                            "plain": "Plain label",
+                        },
+                        "fieldset": {
+                            "field": "Fields",
+                            "fieldset": "Nested Fieldsets",
+                            "id": "Nested id",
+                        },
+                        "id": "First ID",
+                    },
                 },
             },
         ],

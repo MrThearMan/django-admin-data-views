@@ -135,5 +135,10 @@ ADMIN_DATA_VIEWS = {
             "view": "tests.django.urls.buzz_view",
             "name": "buzz",
         },
+        {
+            "route": "complex/",
+            "view": "tests.django.urls.complex_view",
+            "name": "complex",
+        },
     ],
 }

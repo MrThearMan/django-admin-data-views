@@ -5,11 +5,63 @@
   {{ block.super }}
   <link rel="stylesheet" type="text/css" href="{% static "admin/css/forms.css" %}">
   <style>
-  @media (min-width: 895px) {
-      .adv-dict-label {
-          float: none!important;
-      }
-  }
+
+    div.adv-dict,
+    div.adv-dict,
+    div.adv-array {
+        display: flow-root;
+    }
+
+    div.adv-array > ul {
+        display: inline-table;
+        margin-top: 0;
+        padding-top: 0;
+    }
+
+    div.adv-array > ul > li {
+        margin-top: 0;
+        padding-top: 0;
+    }
+
+    div.adv-data label {
+        display: inline-flex;
+        max-width: 150px;
+        min-width: 100px;
+        line-height: normal;
+        margin: 2px 0 2px 0!important;
+        padding: 0.5rem 0 0 0!important;
+        float: left;
+    }
+
+    div.adv-data input,
+    div.adv-data textarea {
+        width: 20em;
+        margin: 4px 0 4px 0!important;
+        display: inline-flex;
+        align-items: center;
+    }
+
+    div.adv-array > ul > li> div.adv-array-item,
+    div.adv-dict > div.adv-dict-items > div.adv-dict-item {
+        display: inline-flex;
+    }
+
+    div.adv-dict > div.adv-dict-items,
+    div.adv-item {
+        display: inline-block;
+    }
+
+    div.adv-data div.help {
+        margin-left: 0!important;
+        padding-left: 0!important;
+    }
+
+    @media (max-width: 1024px) {
+        div.adv-data label {
+            padding: 0.75rem 0 0 0!important;
+        }
+    }
+
   </style>
 {% endblock %}
 
@@ -33,33 +85,33 @@
 {% block content %}
   <div id="content-main">
     <form method="post" novalidate>{% csrf_token %}
-      <div>
+      <div class="adv-data">
       {% if image %}
         <img src="{{ image }}" alt="" style="max-width: 470px; padding-bottom: 10px">
       {% endif %}
       {% for section in data %}
         <fieldset class="module aligned">
           {% if section.name %}
-          <h2>{{ section.name }}</h2>
+            <h2>{{ section.name }}</h2>
           {% endif %}
           {% if section.description %}
-          <div class="description">{{ section.description|safe }}</div>
+            <div class="description">{{ section.description|safe }}</div>
           {% endif %}
-          {% for key, value in section.fields.items %}
-          <div class="form-row">
-            {% if value|get_type == "dict" %}
-            {% include 'admin_data_views/dict_item.html' with label=key items=value only %}
-            {% elif value|get_type == "list" %}
-            {% include 'admin_data_views/list_item.html' with label=key items=value only %}
-            {% else %}
-            <div class="fieldBox">
-              <label class="required">{{ key|capfirst }}</label>
-              {% include 'admin_data_views/item.html' with value=value only %}
-            </div>
-            {% endif %}
-            <br>
+          <div class="adv-dict-items">
+            {% for key, value in section|fields_with_help_texts|items %}
+              <div class="form-row adv-dict-item">
+                {% if value.0|get_type == "dict" %}
+                  {% include 'admin_data_views/dict_item.html' with label=key items=value only %}
+                {% elif value.0|get_type == "list" %}
+                  {% include 'admin_data_views/list_item.html' with label=key items=value only %}
+                {% else %}
+                  <label class="required">{{ key|capfirst }}</label>
+                  {% include 'admin_data_views/item.html' with value=value only %}
+                {% endif %}
+                <br>
+              </div>
+            {% endfor %}
           </div>
-          {% endfor %}
         </fieldset>
       {% endfor %}
       </div>

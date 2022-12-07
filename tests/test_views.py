@@ -125,7 +125,7 @@ def test_admin_foo_item_view(django_client):
     assert len(sections) == 2
     section_1_title = sections[0].find(name="h2")
     section_1_subtitle = sections[0].find(name="div", attrs={"class": "description"})
-    section_1_fields = sections[0].findAll(name="div", attrs={"class": "fieldBox"})
+    section_1_fields = sections[0].findAll(name="div", attrs={"class": "adv-dict-item"})
 
     assert section_1_title is None
     assert section_1_subtitle is None
@@ -139,7 +139,7 @@ def test_admin_foo_item_view(django_client):
 
     section_2_title = sections[1].find(name="h2")
     section_2_subtitle = sections[1].find(name="div", attrs={"class": "description"})
-    section_2_fields = sections[1].findAll(name="div", attrs={"class": "fieldBox"})
+    section_2_fields = sections[1].findAll(name="div", attrs={"class": "adv-dict-item"})
 
     assert section_2_title.text == "This is another section"
     assert section_2_subtitle.text == "This is the description for this section"
@@ -208,7 +208,7 @@ def test_admin_bar_item_view(django_client):
     assert len(sections) == 2
     section_1_title = sections[0].find(name="h2")
     section_1_subtitle = sections[0].find(name="div", attrs={"class": "description"})
-    section_1_fields = sections[0].findAll(name="div", attrs={"class": "fieldBox"})
+    section_1_fields = sections[0].findAll(name="div", attrs={"class": "adv-dict-item"})
 
     assert section_1_title is None
     assert section_1_subtitle is None
@@ -222,7 +222,7 @@ def test_admin_bar_item_view(django_client):
 
     section_2_title = sections[1].find(name="h2")
     section_2_subtitle = sections[1].find(name="div", attrs={"class": "description"})
-    section_2_fields = sections[1].findAll(name="div", attrs={"class": "fieldBox"})
+    section_2_fields = sections[1].findAll(name="div", attrs={"class": "adv-dict-item"})
 
     assert section_2_title.text == "This is another section"
     assert section_2_subtitle.text == "This is the description for this section"
@@ -285,7 +285,7 @@ def test_admin_buzz_item_view(django_client):
     assert len(sections) == 1
     section_1_title = sections[0].find(name="h2")
     section_1_subtitle = sections[0].find(name="div", attrs={"class": "description"})
-    section_1_fields = sections[0].findAll(name="div", attrs={"class": "fieldBox"})
+    section_1_fields = sections[0].findAll(name="div", attrs={"class": "adv-dict-item"})
 
     assert section_1_title is None
     assert section_1_subtitle is None

@@ -1,4 +1,4 @@
-from typing import Any, Callable, Dict, List, NamedTuple, Optional, Set, TypedDict, Union
+from typing import Any, Callable, Dict, ItemsView, List, NamedTuple, Optional, Set, Tuple, TypedDict, Union
 
 
 __all__ = [
@@ -7,17 +7,28 @@ __all__ = [
     "AppModel",
     "Callable",
     "Dict",
+    "DictItems",
     "ItemContext",
+    "ItemsView",
     "ItemViewContext",
     "List",
     "NamedTuple",
+    "NestedDict",
     "Optional",
+    "SectionData",
     "Set",
     "TableContext",
     "TableViewContext",
+    "Tuple",
     "Union",
     "URLConfig",
 ]
+
+
+NestedDict = Dict[str, Union[str, "NestedDict"]]
+NestedItem = List[Union[str, NestedDict, "NestedItem"]]
+DictItem = Union[str, NestedDict, NestedItem]
+DictItems = Tuple[DictItem, str]
 
 
 class Perms(TypedDict):
@@ -63,10 +74,14 @@ class TableViewContext(TypedDict):
     rows: List[List[Any]]
 
 
-class SectionData(TypedDict):
+class SectionDataBase(TypedDict):
     name: Optional[str]
     description: Optional[str]
-    fields: Dict[str, Any]
+    fields: NestedDict
+
+
+class SectionData(SectionDataBase, total=False):
+    help_texts: NestedDict
 
 
 class ItemContextBase(TypedDict):

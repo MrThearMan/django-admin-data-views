@@ -1,21 +1,31 @@
 {% load i18n static admin_data_utils %}
 
-{% if label != "" %}
-<label class="required">{{ label|capfirst }}</label>
-{% endif %}
-
-<div style="float: left;">
-  {% for value in items %}
-    {% if value|get_type == "dict" %}
-    {% include 'admin_data_views/dict_item.html' with label="" items=value only %}
-    {% elif value|get_type == "list" %}
-    {% include 'admin_data_views/list_item.html' with label="" items=value only %}
-    {% else %}
-    <div class="fieldBox">
-      {% include 'admin_data_views/item.html' with value=value only %}
-    </div>
+<div class="related-widget-wrapper">
+  <div class="adv-array">
+    {% if label != "" %}
+      <label class="required">{{ label|capfirst }}</label>
     {% endif %}
-    <hr>
-    <br>
-  {% endfor %}
+
+    <ul>
+      {% for value in items.0 %}
+        <li>
+          <div class="adv-array-item">
+            {% if value.0|get_type == "dict" %}
+              {% include 'admin_data_views/dict_item.html' with label="" items=value only %}
+            {% elif value.0|get_type == "list" %}
+              {% include 'admin_data_views/list_item.html' with label="" items=value only %}
+            {% else %}
+              {% include 'admin_data_views/item.html' with value=value only %}
+            {% endif %}
+          </div>
+          <hr style="margin: 3px 0">
+        </li>
+      {% endfor %}
+
+      {% if items.1 %}
+        <div class="help">{{ items.1|safe }}</div>
+      {% endif %}
+
+    </ul>
+  </div>
 </div>
