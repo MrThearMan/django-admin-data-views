@@ -1,5 +1,7 @@
+import json
+
 from django.contrib import admin
-from django.http import HttpRequest
+from django.http import HttpRequest, HttpResponse
 from django.template.response import TemplateResponse
 from django.urls import URLPattern, URLResolver, path
 from django.utils.translation import gettext
@@ -36,6 +38,29 @@ def get_data_admin_views() -> AppDict:
             add_url(baseroute=baseroute, route=item["route"], name=item["name"]) for item in admin_data_settings.URLS
         ],
     }
+
+
+def download_file(request: HttpRequest) -> HttpResponse:  # pragma: no cover
+    if request.method.upper() != "POST":
+        return HttpResponse(status=405, content=f"{request.method} not supported.", headers={"Allow": "POST"})
+
+    try:
+        name: str = request.POST["name"]  # type: ignore
+    except KeyError:
+        return HttpResponse(status=400, content="'name' is required.")
+
+    try:
+        data: str = request.POST["data"]  # type: ignore
+        data = json.dumps(json.loads(data), indent=2)
+    except KeyError:
+        return HttpResponse(status=400, content="'data' is required.")
+    except Exception:  # noqa
+        return HttpResponse(status=400, content="'data' is is not valid json.")
+
+    response = HttpResponse(content_type="application/force-download")
+    response["Content-Disposition"] = f'attachment; filename="{name}.json"'
+    response.write(data)
+    return response
 
 
 # Added to site
@@ -92,7 +117,12 @@ def get_admin_data_urls(self: admin.AdminSite) -> List[Union[URLResolver, URLPat
             route=f"{baseroute}/",
             view=self.admin_view(self.admin_data_index_view),
             name="admin-data-index-view",
-        )
+        ),
+        path(
+            route=f"{baseroute}/download/",
+            view=self.admin_view(download_file),
+            name="admin-data-download",
+        ),
     ]
     for item in admin_data_settings.URLS:
         custom_paths.append(

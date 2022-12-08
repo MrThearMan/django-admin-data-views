@@ -116,5 +116,10 @@
       {% endfor %}
       </div>
     </form>
+    <form method="post" action="{% url 'admin:admin-data-download' %}" novalidate>{% csrf_token %}
+      <input type="hidden" name="name" value="{{ title }}">
+      <input type="hidden" name="data" value="{{ data|jsonify|escape }}">
+      <input type="submit" name="download" value="Download as JSON">
+    </form>
   </div>
 {% endblock %}

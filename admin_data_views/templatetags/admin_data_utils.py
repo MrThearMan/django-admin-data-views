@@ -1,6 +1,8 @@
+import json
+
 from django import template
 
-from ..typing import Any, Dict, DictItems, ItemsView, NestedDict, SectionData, Union
+from ..typing import Any, Dict, DictItems, ItemsView, List, NestedDict, SectionData, Union
 
 
 register = template.Library()
@@ -16,6 +18,12 @@ def get_type(value: Any) -> str:
 def items(value: Dict[str, Any]) -> ItemsView[str, Any]:
     """Get dict items."""
     return value.items()
+
+
+@register.filter
+def jsonify(value: Union[Dict[str, Any], List[Any]]) -> str:
+    """Convert to json string"""
+    return json.dumps(value, default=str)
 
 
 @register.filter
