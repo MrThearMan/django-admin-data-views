@@ -49,6 +49,10 @@ def foo_items_view(request: HttpRequest, idd: int, **kwargs) -> ItemContext:
                 "fields": {
                     "Fizz": idd * 2,
                 },
+                # Optional help text can be added like this
+                # "help_texts": {
+                #     "Fizz": "Fizz means this."
+                # },
             },
         ],
     )
@@ -68,6 +72,41 @@ Additional kwargs can be provided if the item view needs them.
 
 `kwargs` can contain additional arguments passed to `admin.site.urls`
 in urlpatterns.
+
+`help_texts` can be added optionally for each key. The key must match the
+key in the fields, but not all need to be given. For nested fields, help
+text can be given for the whole nested object or for each individual key.
+
+```python
+...
+{
+    ...
+    "fields": {
+        "foo": {
+            "zero": "",
+            "one": {
+                "1": "2",
+            },
+            "two": [
+                {
+                    "11": "22",
+                },
+            ],
+        },
+    },
+    "help_texts": {
+        "foo": {
+            # no help text for 'zero'
+            "one": {
+                "1": "this is one",
+            },
+            "two": "This is the two list",
+        },
+    },
+    ...
+}
+...
+```
 
 ③ Add configuration to project `settings.py`
 
@@ -111,5 +150,6 @@ urlpatterns = [path("admin/", admin.site.urls)]
 
 ![Item view](img/itemview.png)
 
+> New: Each item view will also have a download link to download the contents in JSON form!
 
 [admin-deps]: https://docs.djangoproject.com/en/dev/ref/contrib/admin/#overview
