@@ -3,7 +3,6 @@ from settings_holder import holder, reload_settings
 
 from .typing import Any, Dict, List, NamedTuple, Set, Union, URLConfig
 
-
 __all__ = [
     "admin_data_settings",
 ]

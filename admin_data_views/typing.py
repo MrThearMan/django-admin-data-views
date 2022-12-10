@@ -1,6 +1,5 @@
 from typing import Any, Callable, Dict, ItemsView, List, NamedTuple, Optional, Set, Tuple, TypedDict, Union
 
-
 __all__ = [
     "Any",
     "AppDict",

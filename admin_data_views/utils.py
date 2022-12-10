@@ -9,7 +9,6 @@ from django.utils.html import format_html
 from .settings import admin_data_settings
 from .typing import Any, Callable, ItemContext, ItemViewContext, TableContext, TableViewContext, URLConfig
 
-
 __all__ = [
     "render_with_item_view",
     "render_with_table_view",

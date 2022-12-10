@@ -9,7 +9,6 @@ from django.utils.translation import gettext
 from .settings import admin_data_settings
 from .typing import Any, AppDict, AppModel, Callable, List, Union
 
-
 __all__ = [
     "add_url",
     "get_data_admin_views",

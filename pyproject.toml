@@ -65,21 +65,15 @@ beautifulsoup4 = "4.11.1"
 
 [tool.poetry.group.docs.dependencies]
 mkdocs = "1.4.2"
-pymdown-extensions = "9.8"
+pymdown-extensions = "9.9"
 mkdocs-mermaid2-plugin = "0.6.0"
 
 [tool.poetry.group.lint.dependencies]
 mypy = "0.991"
-django-stubs = "1.13.0"
+django-stubs = "1.13.1"
 
 [tool.black]
 line-length = 120
-
-[tool.isort]
-profile = "black"
-line_length = 120
-skip_gitignore = "True"
-lines_after_imports = 2
 
 [tool.ruff]
 fix = true
@@ -90,6 +84,7 @@ exclude = [
 select = [
     "F",  # pyflakes
     "E",  # pycodestyle errors
+    "I",  # isort
     # "D",  # pydocstyle
     # "N",  # pep8-naming
     "S",  # flake8-bandit
@@ -163,5 +158,5 @@ commands =
 """
 
 [build-system]
-requires = ["poetry-core>=1.0.0"]
+requires = ["poetry-core>=1.4.0"]
 build-backend = "poetry.core.masonry.api"

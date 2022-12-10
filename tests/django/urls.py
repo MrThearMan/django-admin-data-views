@@ -9,7 +9,6 @@ from django.urls import path
 from admin_data_views.typing import ItemContext, TableContext
 from admin_data_views.utils import ItemLink, render_with_item_view, render_with_table_view
 
-
 with suppress(Exception):
     call_command("makemigrations")
     call_command("migrate")

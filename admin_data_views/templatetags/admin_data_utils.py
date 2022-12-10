@@ -4,7 +4,6 @@ from django import template
 
 from ..typing import Any, Dict, DictItems, ItemsView, List, NestedDict, SectionData, Union
 
-
 register = template.Library()
 
 
