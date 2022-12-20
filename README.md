@@ -31,7 +31,7 @@ Data from an API or file can be shown in similar table and item views than regul
 
 
 [coverage-badge]: https://coveralls.io/repos/github/MrThearMan/django-admin-data-views/badge.svg?branch=main
-[status-badge]: https://img.shields.io/github/workflow/status/MrThearMan/django-admin-data-views/Test
+[status-badge]: https://img.shields.io/github/actions/workflow/status/MrThearMan/django-admin-data-views/test.yml?branch=main
 [pypi-badge]: https://img.shields.io/pypi/v/django-admin-data-views
 [licence-badge]: https://img.shields.io/github/license/MrThearMan/django-admin-data-views
 [repo-badge]: https://img.shields.io/github/last-commit/MrThearMan/django-admin-data-views
