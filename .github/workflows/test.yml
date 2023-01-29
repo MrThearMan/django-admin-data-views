@@ -13,6 +13,6 @@ on:
 
 jobs:
   test:
-    uses: MrThearMan/CI/.github/workflows/test.yml@v0.2.2
+    uses: MrThearMan/CI/.github/workflows/test.yml@v0.3.0
     with:
-      env: '["py38", "py39", "py310", "py311"]'
+      python-version: '["3.8", "3.9", "3.10", "3.11"]'

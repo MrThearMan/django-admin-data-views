@@ -59,6 +59,7 @@ coverage = "6.5.0"
 pytest-django = "4.5.2"
 pre-commit = "3.0.1"
 tox = "4.4.2"
+tox-gh-actions = "3.0.0"
 coveralls = "3.3.1"
 beautifulsoup4 = "4.11.1"
 
@@ -125,6 +126,13 @@ legacy_tox_ini = """
 [tox]
 envlist = py{38, 39, 310, 311}-django{32, 40, 41}
 isolated_build = true
+
+[gh-actions]
+python =
+    3.8: py38
+    3.9: py39
+    3.10: py310
+    3.11: py311
 
 [testenv]
 allowlist_externals =
