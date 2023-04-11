@@ -1,17 +1,28 @@
 site_name: Django Admin Data Views
+
 nav:
   - Home: index.md
   - Setup: setup.md
+
 theme:
   name: readthedocs
   highlightjs: true
   hljs_languages:  # https://github.com/highlightjs/highlight.js/blob/main/SUPPORTED_LANGUAGES.md
     - python
-    - json
     - console
+    - json
 
 markdown_extensions:
-  - pymdownx.superfences:
+  pymdownx.superfences:
+    custom_fences:
+      - name: mermaid
+        class: mermaid
+        format: !!python/name:mermaid2.fence_mermaid
+
+plugins:
+  - search:
+  - mermaid2:
+      version: 9.4.3
 
 extra_css:
   - css/docs.css
