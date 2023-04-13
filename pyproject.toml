@@ -37,6 +37,7 @@ classifiers = [
     "Framework :: Django :: 3.2",
     "Framework :: Django :: 4.0",
     "Framework :: Django :: 4.1",
+    "Framework :: Django :: 4.2",
     "Intended Audience :: Developers",
     "Natural Language :: English",
 ]
@@ -61,7 +62,7 @@ pre-commit = "3.2.2"
 tox = "4.4.11"
 tox-gh-actions = "3.1.0"
 coveralls = "3.3.1"
-beautifulsoup4 = "4.11.1"
+beautifulsoup4 = "4.12.2"
 
 [tool.poetry.group.docs.dependencies]
 mkdocs = "1.4.2"
@@ -127,7 +128,7 @@ django_settings_module = "tests.django.settings"
 [tool.tox]
 legacy_tox_ini = """
 [tox]
-envlist = py{38, 39, 310, 311}-django{32, 40, 41}
+envlist = py{38, 39, 310, 311}-django{32, 40, 41, 42}
 isolated_build = true
 
 [gh-actions]
@@ -146,6 +147,7 @@ deps =
     django32: Django>=3.2,<4.0
     django40: Django>=4.0,<4.1
     django41: Django>=4.1,<4.2
+    django42: Django>=4.2,<4.3
 
     django-settings-holder>=0.1.0
 
@@ -158,5 +160,5 @@ commands =
 """
 
 [build-system]
-requires = ["poetry-core>=1.4.0"]
+requires = ["poetry-core>=1.5.0"]
 build-backend = "poetry.core.masonry.api"
