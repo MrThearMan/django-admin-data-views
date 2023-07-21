@@ -21,6 +21,8 @@ pip install django-admin-data-views
 
 **Source Code**: [https://github.com/MrThearMan/django-admin-data-views/](https://github.com/MrThearMan/django-admin-data-views/)
 
+**Contributing**: [https://github.com/MrThearMan/django-admin-data-views/blob/main/CONTRIBUTING.md](https://github.com/MrThearMan/django-admin-data-views/blob/main/CONTRIBUTING.md)
+
 ---
 
 Django Admin Data Views enables you to easily add non-model data to the django admin panel.
