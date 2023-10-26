@@ -50,7 +50,7 @@ TEMPLATES = [
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "django" / "testdb",
+        "NAME": BASE_DIR / "project" / "testdb",
     },
 }
 
@@ -62,7 +62,9 @@ CACHES = {
 }
 
 AUTH_PASSWORD_VALIDATORS = [
-    {"NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator"},
+    {
+        "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator"
+    },
     {"NAME": "django.contrib.auth.password_validation.MinimumLengthValidator"},
     {"NAME": "django.contrib.auth.password_validation.CommonPasswordValidator"},
     {"NAME": "django.contrib.auth.password_validation.NumericPasswordValidator"},
@@ -91,8 +93,8 @@ LOGGING = {
     },
 }
 
-ROOT_URLCONF = "tests.django.urls"
-WSGI_APPLICATION = "tests.django.wsgi.application"
+ROOT_URLCONF = "tests.project.urls"
+WSGI_APPLICATION = "tests.project.wsgi.application"
 LANGUAGE_CODE = "en"
 LANGUAGES = [("en", "English"), ("fi", "Finland")]
 TIME_ZONE = "UTC"
@@ -106,37 +108,37 @@ ADMIN_DATA_VIEWS = {
     "URLS": [
         {
             "route": "foo/",
-            "view": "tests.django.urls.foo_list_view",
+            "view": "tests.project.urls.foo_list_view",
             "name": "foo_list",
             "items": {
                 "route": "<int:idd>/",
-                "view": "tests.django.urls.foo_items_view",
+                "view": "tests.project.urls.foo_items_view",
                 "name": "foo_item",
             },
         },
         {
             "route": "bar/",
-            "view": "tests.django.urls.bar_list_view",
+            "view": "tests.project.urls.bar_list_view",
             "name": "bar_list",
             "items": {
                 "route": "bar/",
-                "view": "tests.django.urls.bar_items_view",
+                "view": "tests.project.urls.bar_items_view",
                 "name": "bar_item",
             },
         },
         {
             "route": "fizz/",
-            "view": "tests.django.urls.fizz_view",
+            "view": "tests.project.urls.fizz_view",
             "name": "fizz",
         },
         {
             "route": "buzz/",
-            "view": "tests.django.urls.buzz_view",
+            "view": "tests.project.urls.buzz_view",
             "name": "buzz",
         },
         {
             "route": "complex/",
-            "view": "tests.django.urls.complex_view",
+            "view": "tests.project.urls.complex_view",
             "name": "complex",
         },
     ],

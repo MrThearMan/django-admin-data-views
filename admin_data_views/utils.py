@@ -1,13 +1,24 @@
 from functools import wraps
+from typing import TYPE_CHECKING
 
 from django.contrib import admin
-from django.http import HttpRequest
 from django.template.response import TemplateResponse
 from django.urls import reverse
 from django.utils.html import format_html
 
 from .settings import admin_data_settings
-from .typing import Any, Callable, ItemContext, ItemViewContext, TableContext, TableViewContext, URLConfig
+from .typing import (
+    Any,
+    Callable,
+    ItemContext,
+    ItemViewContext,
+    TableContext,
+    TableViewContext,
+    URLConfig,
+)
+
+if TYPE_CHECKING:
+    from django.http import HttpRequest
 
 __all__ = [
     "render_with_item_view",
@@ -44,7 +55,7 @@ def render_with_table_view(
                 for header in context["table"]:
                     for row_no, cell in enumerate(context["table"][header]):
                         if item["items"] is not None and isinstance(cell, ItemLink):
-                            cell = format_html(
+                            cell = format_html(  # noqa: PLW2901
                                 '<a href="{}">{}</a>',
                                 reverse(
                                     viewname=f"admin:{item['items']['name']}",
@@ -61,7 +72,8 @@ def render_with_table_view(
 
                 break  # Stop searching once view is found
         else:
-            raise ValueError(f"Cannot find '{func_name}' in ADMIN_DATA_VIEWS setting.")
+            msg = f"Cannot find '{func_name}' in ADMIN_DATA_VIEWS setting."
+            raise ValueError(msg)
 
         request: HttpRequest = args[0]
         table_context.update(admin.site.each_context(request))
@@ -115,7 +127,8 @@ def render_with_item_view(
                 )
                 break  # Stop searching once view is found
         else:
-            raise ValueError(f"Cannot find '{func_name}' in ADMIN_DATA_VIEWS setting.")
+            msg = f"Cannot find '{func_name}' in ADMIN_DATA_VIEWS setting."
+            raise ValueError(msg)
 
         request: HttpRequest = args[0]
         item_context.update(admin.site.each_context(request))
@@ -127,8 +140,9 @@ def render_with_item_view(
 
 
 class ItemLink:
-    def __init__(self, link_item: Any, /, **kwargs: Any):
-        """Marks a link to an item for the given view.
+    def __init__(self, link_item: Any, /, **kwargs: Any) -> None:
+        """
+        Marks a link to an item for the given view.
 
         :param link_item: Link text.
         :param args: Additional arguments to pass to the item route.

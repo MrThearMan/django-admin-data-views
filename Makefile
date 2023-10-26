@@ -1,15 +1,15 @@
-export DJANGO_SETTINGS_MODULE = tests.django.settings
+export DJANGO_SETTINGS_MODULE = tests.project.settings
 
 .PHONY: help
 .PHONY: dev
 .PHONY: docs
-.PHONY: translations
 .PHONY: tests
 .PHONY: test
 .PHONY: tox
 .PHONY: hook
-.PHONY: pre-commit
-.PHONY: pre-commit-update
+.PHONY: migrate
+.PHONY: migrations
+.PHONY: lint
 .PHONY: mypy
 .PHONY: Makefile
 
@@ -27,13 +27,13 @@ define helptext
 
   dev                  Serve manual testing server
   docs                 Serve mkdocs for development.
-  translations         Make and compile translations.
   tests                Run all tests with coverage.
   test <name>          Run all tests maching the given <name>
   tox                  Run all tests with tox.
   hook                 Install pre-commit hook.
-  pre-commit           Run pre-commit hooks on all files.
-  pre-commit-update    Update all pre-commit hooks to latest versions.
+  lint                 Run pre-commit hooks on all files.
+  migrate              Run migrations.
+  migrations           Create migrations.
   mypy                 Run mypy on all files.
 
   Use quotes (" ") if command contains flags (-h / --help)
@@ -50,16 +50,6 @@ dev:
 docs:
 	@poetry run mkdocs serve -a localhost:8080
 
-translations:
-	@echo ""
-	@echo Making translations...
-	@poetry run python manage.py makemessages -l fi --ignore=.venv/* --ignore=.tox/*
-	@echo ""
-	@echo Compiling...
-	@poetry run python manage.py compilemessages --ignore=.venv/* --ignore=.tox/*
-	@echo ""
-	@echo Done!
-
 tests:
 	@poetry run coverage run -m pytest -vv -s --log-cli-level=INFO
 
@@ -72,11 +62,14 @@ tox:
 hook:
 	@poetry run pre-commit install
 
-pre-commit:
-	@poetry run pre-commit run --all-files
+migrate:
+	@poetry run python manage.py migrate
 
-pre-commit-update:
-	@poetry run pre-commit autoupdate
+migrations:
+	@poetry run python manage.py makemigrations
+
+lint:
+	@poetry run pre-commit run --all-files
 
 mypy:
 	@poetry run mypy admin_data_views/

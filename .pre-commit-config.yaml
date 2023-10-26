@@ -14,12 +14,8 @@ repos:
             "--markdown-linebreak-ext=md"
             ]
 
--   repo: https://github.com/psf/black
-    rev: 23.10.0
-    hooks:
-    -   id: black
-
 -   repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.1.1
+    rev: v0.1.3
     hooks:
     -   id: ruff
+    -   id: ruff-format

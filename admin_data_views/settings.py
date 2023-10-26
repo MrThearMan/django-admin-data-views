@@ -12,7 +12,7 @@ class AdminDataViewsSettings(NamedTuple):
     #
     # URLs for top-level categories. These will appear in the sidebar.
     # URLs for item pages. These will not appear in the sidebar.
-    URLS: List[URLConfig] = []
+    URLS: List[URLConfig] = []  # noqa: RUF012
     #
     # Name of the admin data views section in admin panel
     NAME: str = "Admin Data Views"
@@ -34,7 +34,8 @@ class SettingsHolder(holder.SettingsHolder):
             for i, item in enumerate(val):
                 missing = {"route", "view", "name"}.difference(item.keys())
                 if missing:
-                    raise RuntimeError(f"Missing keys in ADMIN_DATA_VIEWS[{i}]: {missing}")
+                    msg = f"Missing keys in ADMIN_DATA_VIEWS[{i}]: {missing}"
+                    raise RuntimeError(msg)
 
                 item["route"] = item["route"].rstrip("/").lstrip("/")
                 item["view"] = self.import_from_string(item["view"], setting)
@@ -45,7 +46,8 @@ class SettingsHolder(holder.SettingsHolder):
 
                 missing = {"route", "view", "name"}.difference(item["items"].keys())
                 if missing:
-                    raise RuntimeError(f"Missing keys in ADMIN_DATA_VIEWS[{i}]['items']: {missing}")
+                    msg = f"Missing keys in ADMIN_DATA_VIEWS[{i}]['items']: {missing}"
+                    raise RuntimeError(msg)
 
                 item["items"]["route"] = item["items"]["route"].rstrip("/").lstrip("/")
                 item["items"]["view"] = self.import_from_string(item["items"]["view"], setting)
