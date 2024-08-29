@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "django-admin-data-views"
-version = "0.3.1"
+version = "0.4.0"
 description = "Add custom data views to django admin panel."
 authors = [
     "Matti Lamppu <lamppu.matti.akseli@gmail.com>",
@@ -30,8 +30,6 @@ classifiers = [
     "Programming Language :: Python",
     "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3 :: Only",
-    "Programming Language :: Python :: 3.8",
-    "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
@@ -39,6 +37,8 @@ classifiers = [
     "Framework :: Django :: 4.0",
     "Framework :: Django :: 4.1",
     "Framework :: Django :: 4.2",
+    "Framework :: Django :: 5.0",
+    "Framework :: Django :: 5.1",
     "Intended Audience :: Developers",
     "Natural Language :: English",
 ]
@@ -51,15 +51,14 @@ exclude = [
 
 
 [tool.poetry.dependencies]
-python = ">=3.8,<4"
+python = ">=3.10,<4"
 Django = ">=3.2"
-django-settings-holder = ">=0.1.0"
+django-settings-holder = ">=0.1.2"
 
 [tool.poetry.group.test.dependencies]
 pytest = "8.3.2"
 coverage = "7.6.1"
 pytest-django = "4.8.0"
-pre-commit = "3.5.0"
 tox = "4.18.0"
 tox-gh-actions = "3.2.0"
 beautifulsoup4 = "4.12.3"
@@ -71,6 +70,7 @@ mkdocs-mermaid2-plugin = "1.1.1"
 
 [tool.poetry.group.lint.dependencies]
 mypy = "1.11.2"
+pre-commit = "3.8.0"
 django-stubs = "5.0.4"
 
 [tool.ruff]
@@ -170,6 +170,7 @@ exclude_lines = [
     "if TYPE_CHECKING:",
     "except ImportError:",
     "pragma: no cover",
+    "pass",
 ]
 
 [tool.django-stubs]
@@ -178,13 +179,11 @@ django_settings_module = "tests.django.settings"
 [tool.tox]
 legacy_tox_ini = """
 [tox]
-envlist = py{38, 39, 310, 311, 312}-django{32, 40, 41, 42}
+envlist = py{310, 311, 312}-django{32, 40, 41, 42, 50, 51}
 isolated_build = true
 
 [gh-actions]
 python =
-    3.8: py38
-    3.9: py39
     3.10: py310
     3.11: py311
     3.12: py312
@@ -199,17 +198,19 @@ deps =
     django40: Django>=4.0,<4.1
     django41: Django>=4.1,<4.2
     django42: Django>=4.2,<4.3
+    django50: Django>=5.0,<5.1
+    django51: Django>=5.1,<5.2
 
-    django-settings-holder>=0.1.0
+    django-settings-holder>=0.1.2
 
     pytest
     coverage
     pytest-django
     beautifulsoup4
 commands =
-    coverage run -m pytest -vv -s --log-cli-level=INFO
+    coverage run -m pytest -vv -s --disable-warnings
 """
 
 [build-system]
-requires = ["poetry-core>=1.5.0"]
+requires = ["poetry-core>=1.7.0"]
 build-backend = "poetry.core.masonry.api"
