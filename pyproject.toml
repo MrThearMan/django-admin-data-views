@@ -75,14 +75,17 @@ django-stubs = "5.0.4"
 
 [tool.ruff]
 fix = true
+unsafe-fixes = true
 line-length = 120
-exclude = [
+extend-exclude = [
     "tests/*",
 ]
-typing-modules = [
+lint.typing-modules = [
     "admin_data_views.typing",
 ]
-select = [
+lint.explicit-preview-rules = true
+lint.preview = true
+lint.select = [
     "A",        # flake8-builtins
     "ANN",      # flake8-annotations
     "ARG",      # flake8-unused-arguments
@@ -96,14 +99,21 @@ select = [
     "D202",     # pydocstyle: No blank lines allowed after function docstring (found {num_lines})
     "D209",     # pydocstyle: Multi-line docstring closing quotes should be on a separate line
     "D213",     # pydocstyle: Multi-line docstring summary should start at the second line
+    "DJ",       # flake8-django
     "DTZ",      # flake8-datetimez
     "E",        # pycodestyle errors
     "EM",       # flake8-errmsg
     "F",        # pyflakes
+    "FA",       # flake8-future-annotations
     "FBT",      # flake8-boolean-trap
+    "FLY",      # flynt
+    "G",        # flake8-logging-format
     "I",        # isort
+    "ICN",      # flake8-import-conventions
     "INP",      # flake8-no-pep420
+    "INT",      # flake8-gettext
     "ISC",      # flake8-implicit-str-concat
+    "LOG",      # flake8-logging
     "N",        # pep8-naming
     "PERF",     # perflint
     "PGH",      # pygrep-hooks
@@ -113,22 +123,49 @@ select = [
     "PTH",      # flake8-use-pathlib
     "PYI",      # flake8-pyi
     "Q",        # flake8-quotes
+    "R",        # Refactor
     "RET",      # flake8-return
     "RSE",      # flake8-raise
     "RUF",      # ruff-specific rules
     "S",        # flake8-bandit
     "SIM",      # flake8-simplify
+    "SLF",      # flake8-self
     "T20",      # flake8-print
     "TCH",      # flake8-type-checking
+    "TID",      # flake8-tidy-imports
     "TRY",      # tryceratops
     "UP",       # pyupgrade
     "W",        # pycodestyle warnings
 ]
-ignore = [
+# Preview rules
+lint.extend-select = [
+    "B909",     # loop-iterator-mutation
+    "FURB110",  # if-exp-instead-of-or-operator
+    "FURB142",  # for-loop-set-mutations
+    "FURB145",  # slice-copy
+    "FURB171",  # single-item-membership-test
+    "FURB187",  # list-reverse-copy
+    "PLE0307",  # invalid-str-return-type
+    "PLR0916",  # too-many-boolean-expressions
+    "PLR1730",  # if-stmt-min-max
+    "PLR1733",  # unnecessary-dict-index-lookup
+    "PLR1736",  # unnecessary-list-index-lookup
+    "PLR6104",  # non-augmented-assignment
+    "PLW0211",  # bad-staticmethod-argument
+    "PLW0642",  # self-or-cls-assignment
+    "RUF021",   # parenthesize-chained-operators
+    "RUF022",   # unsorted-dunder-all
+    "UP042",    # replace-str-enum
+]
+lint.ignore = [
     "ANN101",   # Missing type annotation for `self` in method
-    "ANN102",   # Missing type annotation for `cls` in classmethod
-    "ANN401",   # Any is allowed
-    "S311",     # random-module is OK.
+    "ANN102",   # Missing type annotation for `cls` in method
+    "ANN401",   # Any-typing allowed
+    "ARG001",   # Unused function argument
+    "ARG002",   # Unused method argument
+    "ARG003",   # Unused class method argument
+    "RUF012",   # No need for ClassVar
+    "G004",     # Logging statement uses f-string
     #
     # Conflicting with ruff-format
     #

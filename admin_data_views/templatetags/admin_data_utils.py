@@ -1,8 +1,12 @@
+from __future__ import annotations
+
 import json
+from typing import TYPE_CHECKING
 
 from django import template
 
-from ..typing import Any, Dict, DictItems, ItemsView, List, NestedDict, SectionData, Union
+if TYPE_CHECKING:
+    from admin_data_views.typing import Any, DictItems, ItemsView, NestedDict, SectionData
 
 register = template.Library()
 
@@ -14,26 +18,26 @@ def get_type(value: Any) -> str:
 
 
 @register.filter
-def items(value: Dict[str, Any]) -> ItemsView[str, Any]:
+def items(value: dict[str, Any]) -> ItemsView[str, Any]:
     """Get dict items."""
     return value.items()
 
 
 @register.filter
-def jsonify(value: Union[Dict[str, Any], List[Any]]) -> str:
+def jsonify(value: dict[str, Any] | list[Any]) -> str:
     """Convert to json string"""
     return json.dumps(value, default=str)
 
 
 @register.filter
-def fields_with_help_texts(section_data: SectionData) -> Dict[str, DictItems]:
+def fields_with_help_texts(section_data: SectionData) -> dict[str, DictItems]:
     """Add help texts and iterate as dict items."""
 
-    def add_help_text(fields: NestedDict, help_texts: NestedDict) -> Dict[str, DictItems]:
-        formatted_fields: Dict[str, DictItems] = {}
+    def add_help_text(fields: NestedDict, help_texts: NestedDict) -> dict[str, DictItems]:
+        formatted_fields: dict[str, DictItems] = {}
 
         for key, value in fields.items():
-            help_text: Union[str, NestedDict] = help_texts.get(key, "")
+            help_text: str | NestedDict = help_texts.get(key, "")
 
             if isinstance(value, dict):
                 if isinstance(help_text, str):

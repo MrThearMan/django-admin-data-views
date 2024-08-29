@@ -1,4 +1,7 @@
+from __future__ import annotations
+
 import json
+from typing import TYPE_CHECKING
 
 from django.contrib import admin
 from django.http import HttpRequest, HttpResponse
@@ -7,7 +10,9 @@ from django.urls import URLPattern, URLResolver, path
 from django.utils.translation import gettext
 
 from .settings import admin_data_settings
-from .typing import Any, AppDict, AppModel, Callable, List, Union
+
+if TYPE_CHECKING:
+    from .typing import Any, AppDict, AppModel, Callable
 
 __all__ = [
     "add_url",
@@ -69,7 +74,7 @@ def download_file(request: HttpRequest) -> HttpResponse:  # pragma: no cover
 # Added to site
 
 
-def get_app_list(self: admin.AdminSite, request: HttpRequest, *args: Any) -> List[AppDict]:
+def get_app_list(self: admin.AdminSite, request: HttpRequest, *args: Any) -> list[AppDict]:
     baseroute = admin_data_settings.NAME.lower().replace(" ", "-")
     app_dict = self._build_app_dict(request, *args) or {}  # pylint: disable=protected-access
 
@@ -113,7 +118,7 @@ def admin_data_index_view(self: admin.AdminSite, request: HttpRequest, **kwargs:
     return TemplateResponse(request, "admin/app_index.html", context)
 
 
-def get_admin_data_urls(self: admin.AdminSite) -> List[Union[URLResolver, URLPattern]]:
+def get_admin_data_urls(self: admin.AdminSite) -> list[URLResolver | URLPattern]:
     baseroute = admin_data_settings.NAME.lower().replace(" ", "-")
     custom_paths = [
         path(
@@ -148,9 +153,9 @@ def get_admin_data_urls(self: admin.AdminSite) -> List[Union[URLResolver, URLPat
 
 
 def get_urls(
-    original_get_urls: Callable[[], List[Union[URLResolver, URLPattern]]],
-) -> Callable[[admin.AdminSite], List[Union[URLResolver, URLPattern]]]:
-    def get_urls_inner(self: admin.AdminSite) -> List[Union[URLResolver, URLPattern]]:
+    original_get_urls: Callable[[], list[URLResolver | URLPattern]],
+) -> Callable[[admin.AdminSite], list[URLResolver | URLPattern]]:
+    def get_urls_inner(self: admin.AdminSite) -> list[URLResolver | URLPattern]:
         return self.get_admin_data_urls() + original_get_urls()
 
     return get_urls_inner

@@ -1,7 +1,9 @@
+from __future__ import annotations
+
 from django.test.signals import setting_changed
 from settings_holder import holder, reload_settings
 
-from .typing import Any, Dict, List, NamedTuple, Set, Union, URLConfig
+from .typing import Any, NamedTuple, URLConfig
 
 __all__ = [
     "admin_data_settings",
@@ -12,7 +14,7 @@ class AdminDataViewsSettings(NamedTuple):
     #
     # URLs for top-level categories. These will appear in the sidebar.
     # URLs for item pages. These will not appear in the sidebar.
-    URLS: List[URLConfig] = []  # noqa: RUF012
+    URLS: list[URLConfig] = []
     #
     # Name of the admin data views section in admin panel
     NAME: str = "Admin Data Views"
@@ -20,17 +22,17 @@ class AdminDataViewsSettings(NamedTuple):
 
 SETTING_NAME = "ADMIN_DATA_VIEWS"
 
-DEFAULTS: Dict[str, Any] = AdminDataViewsSettings()._asdict()
+DEFAULTS: dict[str, Any] = AdminDataViewsSettings()._asdict()
 
-IMPORT_STRINGS: Set[Union[bytes, str]] = {"URLS"}
+IMPORT_STRINGS: set[bytes | str] = {"URLS"}
 
-REMOVED_SETTINGS: Set[str] = set()
+REMOVED_SETTINGS: set[str] = set()
 
 
 class SettingsHolder(holder.SettingsHolder):
     def perform_import(self, val: str, setting: str) -> Any:
-        if setting in {"URLS"}:
-            val: List[URLConfig]
+        if setting == "URLS":
+            val: list[URLConfig]
             for i, item in enumerate(val):
                 missing = {"route", "view", "name"}.difference(item.keys())
                 if missing:

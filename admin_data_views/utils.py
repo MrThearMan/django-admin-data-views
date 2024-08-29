@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from functools import wraps
 from typing import TYPE_CHECKING
 
@@ -21,15 +23,13 @@ if TYPE_CHECKING:
     from django.http import HttpRequest
 
 __all__ = [
+    "ItemLink",
     "render_with_item_view",
     "render_with_table_view",
-    "ItemLink",
 ]
 
 
-def render_with_table_view(
-    func: Callable[..., TableContext],
-) -> Callable[..., TemplateResponse]:
+def render_with_table_view(func: Callable[..., TableContext]) -> Callable[..., TemplateResponse]:
     """Render returned context in a table view."""
 
     @wraps(func)
@@ -84,9 +84,7 @@ def render_with_table_view(
     return wrapper
 
 
-def render_with_item_view(
-    func: Callable[..., ItemContext],
-) -> Callable[..., TemplateResponse]:
+def render_with_item_view(func: Callable[..., ItemContext]) -> Callable[..., TemplateResponse]:
     """Render returned context in an item view."""
 
     @wraps(func)

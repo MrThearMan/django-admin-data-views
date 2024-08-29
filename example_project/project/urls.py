@@ -13,7 +13,7 @@ with suppress(Exception):
     call_command("makemigrations")
     call_command("migrate")
     if not User.objects.filter(username="x", email="user@user.com").exists():
-        User.objects.create_superuser(username="x", email="user@user.com", password="x")
+        User.objects.create_superuser(username="x", email="user@user.com", password="x")  # noqa: S106
 
 
 @render_with_table_view
@@ -67,7 +67,7 @@ def bar_list_view(request: HttpRequest) -> TableContext:
 def bar_items_view(request: HttpRequest) -> ItemContext:
     return ItemContext(
         slug=None,
-        title=f"Bar page",
+        title="Bar page",
         data=[
             {
                 "name": None,
@@ -102,7 +102,7 @@ def fizz_view(request: HttpRequest) -> TableContext:
 def buzz_view(request: HttpRequest) -> ItemContext:
     return ItemContext(
         slug=None,
-        title=f"Buzz page",
+        title="Buzz page",
         data=[
             {
                 "name": None,

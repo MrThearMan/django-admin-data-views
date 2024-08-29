@@ -1,33 +1,29 @@
-from typing import Any, Callable, Dict, ItemsView, List, NamedTuple, Optional, Set, Tuple, TypedDict, Union
+from __future__ import annotations
+
+from typing import Any, Callable, ItemsView, NamedTuple, TypedDict, Union
 
 __all__ = [
     "Any",
     "AppDict",
     "AppModel",
     "Callable",
-    "Dict",
     "DictItems",
     "ItemContext",
-    "ItemsView",
     "ItemViewContext",
-    "List",
+    "ItemsView",
     "NamedTuple",
     "NestedDict",
-    "Optional",
     "SectionData",
-    "Set",
     "TableContext",
     "TableViewContext",
-    "Tuple",
-    "Union",
     "URLConfig",
 ]
 
 
-NestedDict = Dict[str, Union[str, "NestedDict"]]
-NestedItem = List[Union[str, NestedDict, "NestedItem"]]
-DictItem = Union[str, NestedDict, NestedItem]
-DictItems = Tuple[DictItem, str]
+NestedDict = dict[str, Union[str, "NestedDict"]]
+NestedItem = list[Union[str, NestedDict, "NestedItem"]]
+DictItem = str | NestedDict | NestedItem
+DictItems = tuple[DictItem, str]
 
 
 class Perms(TypedDict):
@@ -42,7 +38,7 @@ class AppModel(TypedDict):
     object_name: str
     perms: Perms
     admin_url: str
-    add_url: Optional[str]
+    add_url: str | None
     view_only: bool
 
 
@@ -51,31 +47,31 @@ class AppDict(TypedDict):
     app_label: str
     app_url: str
     has_module_perms: bool
-    models: List[AppModel]
+    models: list[AppModel]
 
 
 class TableContextBase(TypedDict):
     title: str
-    table: Dict[str, List[Any]]
+    table: dict[str, list[Any]]
 
 
 class TableContext(TableContextBase, total=False):
     subtitle: str
-    extra_context: Dict[str, Any]
+    extra_context: dict[str, Any]
 
 
 class TableViewContext(TypedDict):
     slug: str
     title: str
-    subtitle: Optional[str]
+    subtitle: str | None
     app_label: str
-    headers: List[str]
-    rows: List[List[Any]]
+    headers: list[str]
+    rows: list[list[Any]]
 
 
 class SectionDataBase(TypedDict):
-    name: Optional[str]
-    description: Optional[str]
+    name: str | None
+    description: str | None
     fields: NestedDict
 
 
@@ -86,13 +82,13 @@ class SectionData(SectionDataBase, total=False):
 class ItemContextBase(TypedDict):
     slug: Any
     title: str
-    data: List[SectionData]
+    data: list[SectionData]
 
 
 class ItemContext(ItemContextBase, total=False):
     image: str
     subtitle: str
-    extra_context: Dict[str, Any]
+    extra_context: dict[str, Any]
 
 
 class ItemContextLabeled(ItemContext):
@@ -114,4 +110,4 @@ class URLConfig(TypedDict):
     route: str
     view: str
     name: str
-    items: Optional[ItemConfig]
+    items: ItemConfig | None
