@@ -174,7 +174,7 @@ exclude_lines = [
 ]
 
 [tool.django-stubs]
-django_settings_module = "tests.django.settings"
+django_settings_module = "example_project.project.settings"
 
 [tool.tox]
 legacy_tox_ini = """

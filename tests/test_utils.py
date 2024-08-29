@@ -17,25 +17,23 @@ def test_missing_keys_in_admin_data_setting(settings):
         "URLS": [
             {
                 "route": "foo/",
-                "view": "tests.project.urls.foo_list_view",
+                "view": "example_project.project.urls.foo_list_view",
             },
         ],
     }
 
-    with pytest.raises(
-        RuntimeError, match=re.escape("Missing keys in ADMIN_DATA_VIEWS[0]: {'name'}")
-    ):
+    with pytest.raises(RuntimeError, match=re.escape("Missing keys in ADMIN_DATA_VIEWS[0]: {'name'}")):
         admin_data_settings.URLS
 
     settings.ADMIN_DATA_VIEWS = {
         "URLS": [
             {
                 "route": "foo/",
-                "view": "tests.project.urls.foo_list_view",
+                "view": "example_project.project.urls.foo_list_view",
                 "name": "foo_list",
                 "items": {
                     "route": "<int:idd>/",
-                    "view": "tests.project.urls.foo_items_view",
+                    "view": "example_project.project.urls.foo_items_view",
                 },
             },
         ],
@@ -53,7 +51,7 @@ def test_missing_function_for_table_view_in_admin_data_setting(settings):
         "URLS": [
             {
                 "route": "foo/",
-                "view": "tests.project.urls.foo_list_view",
+                "view": "example_project.project.urls.foo_list_view",
                 "name": "foo_list",
             },
         ],
@@ -71,7 +69,7 @@ def test_missing_function_for_item_view_in_from_admin_data_setting(settings):
         "URLS": [
             {
                 "route": "foo/",
-                "view": "tests.project.urls.foo_list_view",
+                "view": "example_project.project.urls.foo_list_view",
                 "name": "foo_list",
             },
         ],

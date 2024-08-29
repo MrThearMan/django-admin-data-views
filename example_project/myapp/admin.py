@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from tests.myapp.models import Thing
+from example_project.myapp.models import Thing
 
 
 @admin.register(Thing)

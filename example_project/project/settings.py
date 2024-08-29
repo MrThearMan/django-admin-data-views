@@ -8,17 +8,14 @@ DEBUG = True
 ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
-    #
     "django.contrib.admin",
     "admin_data_views",
-    #
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    #
-    "tests.myapp",
+    "example_project.myapp",
 ]
 
 MIDDLEWARE = [
@@ -62,9 +59,7 @@ CACHES = {
 }
 
 AUTH_PASSWORD_VALIDATORS = [
-    {
-        "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator"
-    },
+    {"NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator"},
     {"NAME": "django.contrib.auth.password_validation.MinimumLengthValidator"},
     {"NAME": "django.contrib.auth.password_validation.CommonPasswordValidator"},
     {"NAME": "django.contrib.auth.password_validation.NumericPasswordValidator"},
@@ -93,8 +88,8 @@ LOGGING = {
     },
 }
 
-ROOT_URLCONF = "tests.project.urls"
-WSGI_APPLICATION = "tests.project.wsgi.application"
+ROOT_URLCONF = "example_project.project.urls"
+WSGI_APPLICATION = "example_project.project.wsgi.application"
 LANGUAGE_CODE = "en"
 LANGUAGES = [("en", "English"), ("fi", "Finland")]
 TIME_ZONE = "UTC"
@@ -108,37 +103,37 @@ ADMIN_DATA_VIEWS = {
     "URLS": [
         {
             "route": "foo/",
-            "view": "tests.project.urls.foo_list_view",
+            "view": "example_project.project.urls.foo_list_view",
             "name": "foo_list",
             "items": {
                 "route": "<int:idd>/",
-                "view": "tests.project.urls.foo_items_view",
+                "view": "example_project.project.urls.foo_items_view",
                 "name": "foo_item",
             },
         },
         {
             "route": "bar/",
-            "view": "tests.project.urls.bar_list_view",
+            "view": "example_project.project.urls.bar_list_view",
             "name": "bar_list",
             "items": {
                 "route": "bar/",
-                "view": "tests.project.urls.bar_items_view",
+                "view": "example_project.project.urls.bar_items_view",
                 "name": "bar_item",
             },
         },
         {
             "route": "fizz/",
-            "view": "tests.project.urls.fizz_view",
+            "view": "example_project.project.urls.fizz_view",
             "name": "fizz",
         },
         {
             "route": "buzz/",
-            "view": "tests.project.urls.buzz_view",
+            "view": "example_project.project.urls.buzz_view",
             "name": "buzz",
         },
         {
             "route": "complex/",
-            "view": "tests.project.urls.complex_view",
+            "view": "example_project.project.urls.complex_view",
             "name": "complex",
         },
     ],

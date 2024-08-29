@@ -6,4 +6,4 @@ __all__ = [
 
 
 class MyAppConfig(AppConfig):
-    name = "tests.myapp"
+    name = "example_project.myapp"
