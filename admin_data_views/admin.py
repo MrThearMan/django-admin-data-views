@@ -44,7 +44,7 @@ def get_data_admin_views() -> AppDict:
     }
 
 
-def download_file(request: HttpRequest) -> HttpResponse:  # pragma: no cover
+def download_json(request: HttpRequest) -> HttpResponse:  # pragma: no cover
     if request.method.upper() != "POST":
         return HttpResponse(
             status=405,
@@ -67,6 +67,30 @@ def download_file(request: HttpRequest) -> HttpResponse:  # pragma: no cover
 
     response = HttpResponse(content_type="application/force-download")
     response["Content-Disposition"] = f'attachment; filename="{name}.json"'
+    response.write(data)
+    return response
+
+
+def download_csv(request: HttpRequest) -> HttpResponse:  # pragma: no cover
+    if request.method.upper() != "POST":
+        return HttpResponse(
+            status=405,
+            content=f"{request.method} not supported.",
+            headers={"Allow": "POST"},
+        )
+
+    try:
+        name: str = request.POST["name"]  # type: ignore[assignment]
+    except KeyError:
+        return HttpResponse(status=400, content="'name' is required.")
+
+    try:
+        data: str = request.POST["data"]  # type: ignore[assignment]
+    except KeyError:
+        return HttpResponse(status=400, content="'data' is required.")
+
+    response = HttpResponse(content_type="application/force-download")
+    response["Content-Disposition"] = f'attachment; filename="{name}.csv"'
     response.write(data)
     return response
 
@@ -127,9 +151,14 @@ def get_admin_data_urls(self: admin.AdminSite) -> list[URLResolver | URLPattern]
             name="admin-data-index-view",
         ),
         path(
-            route=f"{baseroute}/download/",
-            view=self.admin_view(download_file),
-            name="admin-data-download",
+            route=f"{baseroute}/download/json/",
+            view=self.admin_view(download_json),
+            name="admin-json-download",
+        ),
+        path(
+            route=f"{baseroute}/download/csv/",
+            view=self.admin_view(download_csv),
+            name="admin-csv-download",
         ),
     ]
     for item in admin_data_settings.URLS:

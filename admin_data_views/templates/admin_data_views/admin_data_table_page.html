@@ -1,5 +1,5 @@
 {% extends "admin/base_site.html" %}
-{% load i18n static %}
+{% load i18n static admin_data_utils %}
 
 {% block extrastyle %}
   {{ block.super }}
@@ -28,6 +28,11 @@
   <div id="content-main">
     <div class="module" id="changelist">
       <div class="changelist-form-container">
+        <form method="post" style="margin-bottom: 1rem" action="{% url 'admin:admin-csv-download' %}" novalidate>{% csrf_token %}
+          <input type="hidden" name="name" value="{{ title }}">
+          <input type="hidden" name="data" value="{{ rows|to_csv|escape }}">
+          <input type="submit" name="download" value="Download as CSV">
+        </form>
         <form id="changelist-form" method="post" novalidate>{% csrf_token %}
           <div class="results">
             <table id="result_list">

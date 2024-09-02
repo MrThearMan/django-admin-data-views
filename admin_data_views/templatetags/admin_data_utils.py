@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import re
 from typing import TYPE_CHECKING
 
 from django import template
@@ -9,6 +10,8 @@ if TYPE_CHECKING:
     from admin_data_views.typing import Any, DictItems, ItemsView, NestedDict, SectionData
 
 register = template.Library()
+
+LINK_TEMPLATE = re.compile(r'<a href=".*">(?P<value>.*)</a>')
 
 
 @register.filter
@@ -27,6 +30,23 @@ def items(value: dict[str, Any]) -> ItemsView[str, Any]:
 def jsonify(value: dict[str, Any] | list[Any]) -> str:
     """Convert to json string"""
     return json.dumps(value, default=str)
+
+
+@register.filter
+def to_csv(value: list[list[str]]) -> str:
+    """Convert to csv string"""
+    string = ""
+    for row in value:
+        row_string = ""
+        for item in row:
+            match = LINK_TEMPLATE.match(item)
+            if match is not None:
+                item = match.group("value")
+            row_string += f"{item},"
+
+        string += row_string[:-1] + "\n"
+
+    return string[:-1]
 
 
 @register.filter
