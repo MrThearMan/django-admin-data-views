@@ -41,7 +41,7 @@ def to_csv(value: list[list[str]]) -> str:
         for item in row:
             match = LINK_TEMPLATE.match(item)
             if match is not None:
-                item = match.group("value")
+                item = match.group("value")  # noqa: PLW2901
             row_string += f"{item},"
 
         string += row_string[:-1] + "\n"
