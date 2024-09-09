@@ -58,8 +58,8 @@ django-settings-holder = ">=0.1.2"
 [tool.poetry.group.test.dependencies]
 pytest = "8.3.2"
 coverage = "7.6.1"
-pytest-django = "4.8.0"
-tox = "4.18.0"
+pytest-django = "4.9.0"
+tox = "4.18.1"
 tox-gh-actions = "3.2.0"
 beautifulsoup4 = "4.12.3"
 
