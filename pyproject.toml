@@ -33,9 +33,7 @@ classifiers = [
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
-    "Framework :: Django :: 3.2",
-    "Framework :: Django :: 4.0",
-    "Framework :: Django :: 4.1",
+    "Programming Language :: Python :: 3.13",
     "Framework :: Django :: 4.2",
     "Framework :: Django :: 5.0",
     "Framework :: Django :: 5.1",
@@ -52,7 +50,7 @@ exclude = [
 
 [tool.poetry.dependencies]
 python = ">=3.10,<4"
-Django = ">=3.2"
+Django = ">=4.2"
 django-settings-holder = ">=0.1.2"
 
 [tool.poetry.group.test.dependencies]
@@ -186,7 +184,7 @@ lint.ignore = [
 ]
 
 [tool.mypy]
-python_version = "3.12"
+python_version = "3.13"
 warn_return_any = "True"
 warn_unused_configs = "True"
 plugins = [
@@ -216,7 +214,7 @@ django_settings_module = "example_project.project.settings"
 [tool.tox]
 legacy_tox_ini = """
 [tox]
-envlist = py{310, 311, 312}-django{32, 40, 41, 42, 50, 51}
+envlist = py{310, 311, 312, 313}-django{42, 50, 51}
 isolated_build = true
 
 [gh-actions]
@@ -224,6 +222,7 @@ python =
     3.10: py310
     3.11: py311
     3.12: py312
+    3.13: py313
 
 [testenv]
 allowlist_externals =
@@ -231,9 +230,6 @@ allowlist_externals =
 setenv =
     PYTHONPATH = {toxinidir}
 deps =
-    django32: Django>=3.2,<4.0
-    django40: Django>=4.0,<4.1
-    django41: Django>=4.1,<4.2
     django42: Django>=4.2,<4.3
     django50: Django>=5.0,<5.1
     django51: Django>=5.1,<5.2
@@ -249,5 +245,5 @@ commands =
 """
 
 [build-system]
-requires = ["poetry-core>=1.7.0"]
+requires = ["poetry-core>=1.9.0"]
 build-backend = "poetry.core.masonry.api"
