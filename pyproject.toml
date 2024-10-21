@@ -55,9 +55,9 @@ django-settings-holder = ">=0.1.2"
 
 [tool.poetry.group.test.dependencies]
 pytest = "8.3.3"
-coverage = "7.6.3"
+coverage = "7.6.4"
 pytest-django = "4.9.0"
-tox = "4.21.2"
+tox = "4.23.0"
 tox-gh-actions = "3.2.0"
 beautifulsoup4 = "4.12.3"
 
@@ -67,7 +67,7 @@ pymdown-extensions = "10.11.2"
 mkdocs-mermaid2-plugin = "1.1.1"
 
 [tool.poetry.group.lint.dependencies]
-mypy = "1.11.2"
+mypy = "1.12.1"
 pre-commit = "4.0.1"
 django-stubs = "5.1.0"
 
