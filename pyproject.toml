@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "django-admin-data-views"
-version = "0.4.1"
+version = "0.4.2"
 description = "Add custom data views to django admin panel."
 authors = [
     "Matti Lamppu <lamppu.matti.akseli@gmail.com>",
@@ -51,7 +51,8 @@ exclude = [
 [tool.poetry.dependencies]
 python = ">=3.10,<4"
 Django = ">=4.2"
-django-settings-holder = ">=0.1.2"
+django-settings-holder = ">=0.2.0"
+typing-extensions = { version = ">=4.12.1", python = "<3.11" }
 
 [tool.poetry.group.test.dependencies]
 pytest = "8.3.3"
@@ -181,6 +182,25 @@ lint.ignore = [
     "Q002",     # bad-quotes-docstring
     "Q003",     # avoidable-escaped-quote
     "W191",     # tab-indentation
+]
+
+[tool.ruff.lint.extend-per-file-ignores]
+"**/*/test_*.py" = [
+    "ANN",      # No need to annotate tests
+    "E721",     # No need to compare to True
+    "N801",     # Allow whatever class names in tests
+    "N802",     # Allow whatever function names in tests
+    "N815",     # Allow whatever variable names in tests
+    "PLR0915",  # Can have as many statements as needed
+    "PLR2004",  # Magic value comparisons are allowed in tests
+    "S101",     # Assert is fine
+    "S105",     # Hardcoded passwords are fine in tests
+    "S106",     # Hardcoded passwords are fine in tests
+    "S108",     # No need to care about insecure temp file usages in tests
+    "S311",     # Pseudo-random generators are fine here
+    "SLF",      # Allow accessing private members in tests
+    "UP",       # No upgrade rules
+    "PLR0914",  # Too many local variables
 ]
 
 [tool.mypy]
