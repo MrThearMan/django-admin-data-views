@@ -54,7 +54,7 @@ def render_with_table_view(func: Callable[..., TableContext]) -> Callable[..., T
                 # This way the table is easier to render in the template.
                 for header in context["table"]:
                     for row_no, cell in enumerate(context["table"][header]):
-                        if item["items"] is not None and isinstance(cell, ItemLink):
+                        if item.get("items") is not None and isinstance(cell, ItemLink):
                             cell = format_html(  # noqa: PLW2901
                                 '<a href="{}">{}</a>',
                                 reverse(
@@ -110,7 +110,7 @@ def render_with_item_view(func: Callable[..., ItemContext]) -> Callable[..., Tem
                     item_context["slug"] = item["route"]
                 break  # Stop searching once view is found
 
-            if item["items"] is None:
+            if item.get("items") is None:
                 continue
 
             # Item view inside table view definition

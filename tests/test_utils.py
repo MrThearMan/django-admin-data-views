@@ -1,18 +1,17 @@
-import re
-
 import pytest
 
 from admin_data_views.settings import admin_data_settings
 from admin_data_views.templatetags.admin_data_utils import fields_with_help_texts
 from admin_data_views.typing import SectionData
 from admin_data_views.utils import render_with_item_view, render_with_table_view
+from tests.helpers import exact
 
 
 def func(request):
     return {}
 
 
-def test_missing_keys_in_admin_data_setting(settings):
+def test_missing_keys_in_admin_data_setting(settings) -> None:
     settings.ADMIN_DATA_VIEWS = {
         "URLS": [
             {
@@ -22,8 +21,9 @@ def test_missing_keys_in_admin_data_setting(settings):
         ],
     }
 
-    with pytest.raises(RuntimeError, match=re.escape("Missing keys in ADMIN_DATA_VIEWS[0]: {'name'}")):
-        admin_data_settings.URLS
+    msg = "Missing keys in URLS[0]: {'name'}"
+    with pytest.raises(TypeError, match=exact(msg)):
+        x = admin_data_settings.URLS
 
     settings.ADMIN_DATA_VIEWS = {
         "URLS": [
@@ -39,14 +39,12 @@ def test_missing_keys_in_admin_data_setting(settings):
         ],
     }
 
-    with pytest.raises(
-        RuntimeError,
-        match=re.escape("Missing keys in ADMIN_DATA_VIEWS[0]['items']: {'name'}"),
-    ):
-        admin_data_settings.URLS
+    msg = "Missing keys in URLS[0]['items']: {'name'}"
+    with pytest.raises(TypeError, match=exact(msg)):
+        x = admin_data_settings.URLS
 
 
-def test_missing_function_for_table_view_in_admin_data_setting(settings):
+def test_missing_function_for_table_view_in_admin_data_setting(settings) -> None:
     settings.ADMIN_DATA_VIEWS = {
         "URLS": [
             {
@@ -57,14 +55,12 @@ def test_missing_function_for_table_view_in_admin_data_setting(settings):
         ],
     }
 
-    with pytest.raises(
-        ValueError,
-        match="Cannot find 'tests.test_utils.func' in ADMIN_DATA_VIEWS setting.",
-    ):
+    msg = "Cannot find 'tests.test_utils.func' in ADMIN_DATA_VIEWS setting."
+    with pytest.raises(ValueError, match=exact(msg)):
         render_with_table_view(func)(None)
 
 
-def test_missing_function_for_item_view_in_from_admin_data_setting(settings):
+def test_missing_function_for_item_view_in_from_admin_data_setting(settings) -> None:
     settings.ADMIN_DATA_VIEWS = {
         "URLS": [
             {
@@ -75,14 +71,12 @@ def test_missing_function_for_item_view_in_from_admin_data_setting(settings):
         ],
     }
 
-    with pytest.raises(
-        ValueError,
-        match="Cannot find 'tests.test_utils.func' in ADMIN_DATA_VIEWS setting.",
-    ):
+    msg = "Cannot find 'tests.test_utils.func' in ADMIN_DATA_VIEWS setting."
+    with pytest.raises(ValueError, match=exact(msg)):
         render_with_item_view(func)(None)
 
 
-def test_fields_with_help_texts():
+def test_fields_with_help_texts() -> None:
     section_data = SectionData(
         name=None,
         description=None,
@@ -97,7 +91,7 @@ def test_fields_with_help_texts():
     }
 
 
-def test_fields_with_help_texts__nested():
+def test_fields_with_help_texts__nested() -> None:
     section_data = SectionData(
         name=None,
         description=None,
@@ -112,7 +106,7 @@ def test_fields_with_help_texts__nested():
     }
 
 
-def test_fields_with_help_texts__nested__main():
+def test_fields_with_help_texts__nested__main() -> None:
     section_data = SectionData(
         name=None,
         description=None,
@@ -127,7 +121,7 @@ def test_fields_with_help_texts__nested__main():
     }
 
 
-def test_fields_with_help_texts__nested__array():
+def test_fields_with_help_texts__nested__array() -> None:
     section_data = SectionData(
         name=None,
         description=None,
@@ -148,7 +142,7 @@ def test_fields_with_help_texts__nested__array():
     }
 
 
-def test_fields_with_help_texts__nested__array__dicts():
+def test_fields_with_help_texts__nested__array__dicts() -> None:
     section_data = SectionData(
         name=None,
         description=None,
@@ -175,7 +169,7 @@ def test_fields_with_help_texts__nested__array__dicts():
     }
 
 
-def test_fields_with_help_texts__nested__array__dicts__sub():
+def test_fields_with_help_texts__nested__array__dicts__sub() -> None:
     section_data = SectionData(
         name=None,
         description=None,

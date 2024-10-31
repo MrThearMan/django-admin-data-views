@@ -2,6 +2,11 @@ from __future__ import annotations
 
 from typing import Any, Callable, ItemsView, NamedTuple, TypedDict, Union
 
+try:
+    from typing import NotRequired
+except ImportError:
+    from typing_extensions import NotRequired
+
 __all__ = [
     "Any",
     "AppDict",
@@ -13,6 +18,7 @@ __all__ = [
     "ItemsView",
     "NamedTuple",
     "NestedDict",
+    "NotRequired",
     "SectionData",
     "TableContext",
     "TableViewContext",
@@ -110,4 +116,4 @@ class URLConfig(TypedDict):
     route: str
     view: str
     name: str
-    items: ItemConfig | None
+    items: NotRequired[ItemConfig]

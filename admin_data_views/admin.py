@@ -169,7 +169,7 @@ def get_admin_data_urls(self: admin.AdminSite) -> list[URLResolver | URLPattern]
                 name=item["name"],
             )
         )
-        if item["items"] is not None:
+        if item.get("items") is not None:
             custom_paths.append(
                 path(
                     route=f"{baseroute}/{item['route']}/{item['items']['route']}/",

@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from django.test.signals import setting_changed
-from settings_holder import holder, reload_settings
+from settings_holder import SettingsHolder, reload_settings
 
 from .typing import Any, NamedTuple, URLConfig
 
@@ -24,46 +24,58 @@ SETTING_NAME = "ADMIN_DATA_VIEWS"
 
 DEFAULTS: dict[str, Any] = AdminDataViewsSettings()._asdict()
 
-IMPORT_STRINGS: set[bytes | str] = {"URLS"}
+
+IMPORT_STRINGS: set[bytes | str] = {
+    "URLS.0.view",
+    "URLS.0.items.view",
+}
 
 REMOVED_SETTINGS: set[str] = set()
 
 
-class SettingsHolder(holder.SettingsHolder):
-    def perform_import(self, val: str, setting: str) -> Any:
-        if setting == "URLS":
-            val: list[URLConfig]
-            for i, item in enumerate(val):
-                missing = {"route", "view", "name"}.difference(item.keys())
-                if missing:
-                    msg = f"Missing keys in ADMIN_DATA_VIEWS[{i}]: {missing}"
-                    raise RuntimeError(msg)
+def urls_validator(val: Any) -> None:
+    if not isinstance(val, list):  # pragma: no cover
+        msg = "URLS must be a list"
+        raise TypeError(msg)
 
-                item["route"] = item["route"].rstrip("/").lstrip("/")
-                item["view"] = self.import_from_string(item["view"], setting)
+    for i, item in enumerate(val):
+        if not isinstance(item, dict):  # pragma: no cover
+            msg = f"URLS[{i}] must be a dict"
+            raise TypeError(msg)
 
-                if item.get("items") is None:
-                    item["items"] = None
-                    continue
+        missing = {"route", "view", "name"}.difference(item.keys())
+        if missing:
+            msg = f"Missing keys in URLS[{i}]: {missing}"
+            raise TypeError(msg)
 
-                missing = {"route", "view", "name"}.difference(item["items"].keys())
-                if missing:
-                    msg = f"Missing keys in ADMIN_DATA_VIEWS[{i}]['items']: {missing}"
-                    raise RuntimeError(msg)
+        item["route"] = item["route"].rstrip("/").lstrip("/")
 
-                item["items"]["route"] = item["items"]["route"].rstrip("/").lstrip("/")
-                item["items"]["view"] = self.import_from_string(item["items"]["view"], setting)
+        items = item.get("items")
+        if items is None:
+            continue
 
-            return val
+        if not isinstance(items, dict):  # pragma: no cover
+            msg = f"URLS[{i}]['items'] must be a dict"
+            raise TypeError(msg)
 
-        return super().perform_import(val, setting)  # pragma: no cover
+        missing = {"route", "view", "name"}.difference(items.keys())
+        if missing:
+            msg = f"Missing keys in URLS[{i}]['items']: {missing}"
+            raise TypeError(msg)
 
+        items["route"] = items["route"].rstrip("/").lstrip("/")
+
+
+VALIDATORS: dict[str, Any] = {
+    "URLS": urls_validator,
+}
 
 admin_data_settings = SettingsHolder(
     setting_name=SETTING_NAME,
     defaults=DEFAULTS,
     import_strings=IMPORT_STRINGS,
     removed_settings=REMOVED_SETTINGS,
+    validators=VALIDATORS,
 )
 
 reload_admin_data_settings = reload_settings(SETTING_NAME, admin_data_settings)
