@@ -28,11 +28,13 @@
   <div id="content-main">
     <div class="module" id="changelist">
       <div class="changelist-form-container">
+        {% if download_button %}
         <form method="post" style="margin-bottom: 1rem" action="{% url 'admin:admin-csv-download' %}" novalidate>{% csrf_token %}
           <input type="hidden" name="name" value="{{ title }}">
           <input type="hidden" name="data" value="{{ rows|to_csv|escape }}">
           <input type="submit" name="download" value="Download as CSV">
         </form>
+        {% endif %}
         <form id="changelist-form" method="post" novalidate>{% csrf_token %}
           <div class="results">
             <table id="result_list">

@@ -44,6 +44,7 @@ def render_with_table_view(func: Callable[..., TableContext]) -> Callable[..., T
                 table_context = TableViewContext(
                     slug=item["route"],
                     title=context.get("title"),
+                    download_button=context.get("download_button", True),
                     subtitle=context.get("subtitle"),
                     app_label=admin_data_settings.NAME,
                     headers=list(context["table"].keys()),
@@ -96,6 +97,7 @@ def render_with_item_view(func: Callable[..., ItemContext]) -> Callable[..., Tem
             slug=context.get("slug"),
             title=context.get("title"),
             subtitle=context.get("subtitle"),
+            download_button=context.get("download_button", True),
             image=context.get("image"),
             data=context.get("data"),
             app_label=admin_data_settings.NAME,

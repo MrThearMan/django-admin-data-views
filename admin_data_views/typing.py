@@ -63,6 +63,7 @@ class TableContextBase(TypedDict):
 
 class TableContext(TableContextBase, total=False):
     subtitle: str
+    download_button: bool
     extra_context: dict[str, Any]
 
 
@@ -70,6 +71,7 @@ class TableViewContext(TypedDict):
     slug: str
     title: str
     subtitle: str | None
+    download_button: bool
     app_label: str
     headers: list[str]
     rows: list[list[Any]]
@@ -94,6 +96,7 @@ class ItemContextBase(TypedDict):
 class ItemContext(ItemContextBase, total=False):
     image: str
     subtitle: str
+    download_button: bool
     extra_context: dict[str, Any]
 
 
@@ -104,6 +107,7 @@ class ItemContextLabeled(ItemContext):
 class ItemViewContext(ItemContextLabeled, total=False):
     category_slug: str
     category_url: str
+    download_button: bool
 
 
 class ItemConfig(TypedDict):

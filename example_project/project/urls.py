@@ -20,7 +20,7 @@ with suppress(Exception):
 def foo_list_view(request: HttpRequest) -> TableContext:
     return TableContext(
         title="Foo items",
-        subtitle=None,
+        download_button=False,
         table={
             "Name": [ItemLink("Foo", idd=123), ItemLink("Bar", idd=124)],
             "Value": ["1", "2"],
