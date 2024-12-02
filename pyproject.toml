@@ -55,7 +55,7 @@ django-settings-holder = ">=0.2.0"
 typing-extensions = { version = ">=4.12.1", python = "<3.11" }
 
 [tool.poetry.group.test.dependencies]
-pytest = "8.3.3"
+pytest = "8.3.4"
 coverage = "7.6.8"
 pytest-django = "4.9.0"
 tox = "4.23.2"
