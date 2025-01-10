@@ -41,6 +41,7 @@ dynamic = ["dependencies"]
 "Documentation" = "https://mrthearman.github.io/django-admin-data-views"
 
 [tool.poetry]
+requires-poetry = ">=2.0.0"
 packages = [
     { include = "admin_data_views" },
 ]
@@ -64,9 +65,7 @@ pymdown-extensions = "10.13"
 mkdocs-mermaid2-plugin = "1.2.1"
 
 [tool.poetry.group.lint.dependencies]
-mypy = "1.14.1"
 pre-commit = "4.0.1"
-django-stubs = "5.1.1"
 
 [tool.ruff]
 fix = true
@@ -197,14 +196,6 @@ lint.ignore = [
     "SLF",      # Allow accessing private members in tests
     "UP",       # No upgrade rules
     "PLR0914",  # Too many local variables
-]
-
-[tool.mypy]
-python_version = "3.13"
-warn_return_any = "True"
-warn_unused_configs = "True"
-plugins = [
-    "mypy_django_plugin.main",
 ]
 
 [tool.coverage.run]
