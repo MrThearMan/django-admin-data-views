@@ -67,7 +67,7 @@ def fields_with_help_texts(section_data: SectionData) -> dict[str, DictItems]:
             elif isinstance(value, list):
                 values = []
                 for item in value:
-                    if not isinstance(item, (dict, list)):
+                    if not isinstance(item, dict | list):
                         values.append((item, ""))
                     else:
                         res = add_help_text(item, {} if isinstance(help_text, str) else help_text)

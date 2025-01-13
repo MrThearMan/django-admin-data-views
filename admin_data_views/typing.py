@@ -1,7 +1,7 @@
 from __future__ import annotations
 
-from collections.abc import ItemsView
-from typing import Any, Callable, NamedTuple, TypedDict, Union
+from collections.abc import Callable, ItemsView
+from typing import Any, NamedTuple, TypedDict, Union
 
 try:
     from typing import NotRequired
