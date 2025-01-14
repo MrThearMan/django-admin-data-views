@@ -152,8 +152,7 @@ lint.extend-select = [
     "UP042",    # replace-str-enum
 ]
 lint.ignore = [
-    "ANN101",   # Missing type annotation for `self` in method
-    "ANN102",   # Missing type annotation for `cls` in method
+    "A005",     # Allow shadowing builtin modules
     "ANN401",   # Any-typing allowed
     "ARG001",   # Unused function argument
     "ARG002",   # Unused method argument
