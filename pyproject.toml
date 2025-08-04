@@ -53,15 +53,15 @@ typing-extensions = { version = ">=4.12.1", python = "<3.11" }
 
 [tool.poetry.group.test.dependencies]
 pytest = "8.4.1"
-coverage = "7.10.1"
+coverage = "7.10.2"
 pytest-django = "4.11.1"
-tox = "4.28.3"
+tox = "4.28.4"
 tox-gh-actions = "3.3.0"
 beautifulsoup4 = "4.13.4"
 
 [tool.poetry.group.docs.dependencies]
 mkdocs = "1.6.1"
-pymdown-extensions = "10.16"
+pymdown-extensions = "10.16.1"
 mkdocs-mermaid2-plugin = "1.2.1"
 
 [tool.poetry.group.lint.dependencies]
