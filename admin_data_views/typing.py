@@ -6,7 +6,7 @@ from typing import Any, NamedTuple, TypedDict, Union
 try:
     from typing import NotRequired
 except ImportError:
-    from typing_extensions import NotRequired
+    from typing import NotRequired
 
 __all__ = [
     "Any",

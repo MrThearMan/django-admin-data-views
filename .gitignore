@@ -1,1 +1,28 @@
-/tests/django/testdb
+# Caches
+.nox
+.grimp_cache
+.ruff_cache
+.mypy_cache
+*.pytest_cache
+*.hypothesis
+*__pycache__
+
+# Build dirs
+dist
+build
+
+# Generated files
+coverage.xml
+profile.svg
+.coverage
+/site
+/dist
+
+# Local configs
+.idea
+.vscode
+pytest.ini
+mypy.ini
+
+# venv
+/.venv/
