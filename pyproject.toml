@@ -51,8 +51,8 @@ django-settings-holder = ">=0.2.0"
 typing-extensions = { version = ">=4.12.1", python = "<3.11" }
 
 [tool.poetry.group.test.dependencies]
-pytest = "8.4.2"
-coverage = "7.11.0"
+pytest = "9.0.0"
+coverage = "7.11.3"
 pytest-django = "4.11.1"
 nox = "2025.10.16"
 beautifulsoup4 = "4.14.2"
@@ -63,7 +63,7 @@ pymdown-extensions = "10.16.1"
 mkdocs-mermaid2-plugin = "1.2.3"
 
 [tool.poetry.group.lint.dependencies]
-pre-commit = "4.3.0"
+pre-commit = "4.4.0"
 
 [tool.ruff]
 fix = true
