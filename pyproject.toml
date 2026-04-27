@@ -65,7 +65,7 @@ pymdown-extensions = "10.21.2"
 mkdocs-mermaid2-plugin = "1.2.3"
 
 [tool.poetry.group.lint.dependencies]
-pre-commit = "4.5.1"
+pre-commit = "4.6.0"
 
 [tool.ruff]
 fix = true
