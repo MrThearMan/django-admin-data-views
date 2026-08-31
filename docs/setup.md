@@ -20,6 +20,7 @@ from django.http import HttpRequest
 from admin_data_views.typing import TableContext, ItemContext
 from admin_data_views.utils import render_with_table_view, render_with_item_view, ItemLink
 
+
 @render_with_table_view
 def foo_list_view(request: HttpRequest, **kwargs) -> TableContext:
     return TableContext(
@@ -29,6 +30,7 @@ def foo_list_view(request: HttpRequest, **kwargs) -> TableContext:
             "Value": ["1", "2"],
         },
     )
+
 
 @render_with_item_view
 def foo_items_view(request: HttpRequest, idd: int, **kwargs) -> ItemContext:
