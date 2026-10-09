@@ -1,3 +1,7 @@
+---
+description: "Django Admin Data Views: add custom data views to the Django admin panel."
+---
+
 # Django Admin Data Views
 
 [![Coverage Status][coverage-badge]][coverage]

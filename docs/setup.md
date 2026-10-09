@@ -1,4 +1,8 @@
-## Setup
+---
+description: "Install Django Admin Data Views, and add table and item views to the admin panel."
+---
+
+# Setup
 
 ① Add `admin_data_views` to installed in `settings.py` apps after `django.contrib.admin`
 

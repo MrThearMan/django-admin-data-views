@@ -1,3 +1,7 @@
+---
+description: "How to report bugs, request features, set up the development environment and make a release."
+---
+
 # Contributing
 
 Thank you for your interest in contributing!

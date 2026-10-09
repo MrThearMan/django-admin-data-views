@@ -1,214 +1,466 @@
-body {
-    color: #bbbbbb;
+/*
+Palette
+*/
+:root {
+    --docs-text-color: #bbbbbb;
+    --docs-nav-color: #191919;
+    --docs-section-color: #222222;
+    --docs-active-color: #111111;
+    --docs-quote-color: #424242;
+    --docs-notice-color: #aa4926;
+    --docs-target-color: #292900;
+
+    --docs-code-color: #1a1c20;
+    --docs-lineno-color: #404d60;
+    --docs-highlight-color: #23252d;
+
+    --docs-scrollbar-color: #424242;
+
+    --docs-link-color: #4f9ed9;
+    --docs-link-hover-color: #7fbce8;
 }
 
+[data-md-color-scheme="slate"] {
+    --md-default-bg-color: var(--docs-section-color);
+    --md-default-fg-color: var(--docs-text-color);
+    --md-default-fg-color--light: #999999;
+    --md-default-fg-color--lighter: #6a6a6a;
+    --md-default-fg-color--lightest: #3a3a3a;
+
+    --md-primary-fg-color: var(--docs-nav-color);
+    --md-primary-fg-color--light: var(--docs-section-color);
+    --md-primary-fg-color--dark: var(--docs-active-color);
+    --md-primary-bg-color: var(--docs-text-color);
+    --md-primary-bg-color--light: #999999;
+
+    --md-accent-fg-color: var(--docs-link-hover-color);
+    --md-accent-fg-color--transparent: var(--docs-active-color);
+    --md-accent-bg-color: var(--docs-section-color);
+
+    --md-typeset-color: var(--docs-text-color);
+    --md-typeset-a-color: var(--docs-link-color);
+    --md-typeset-mark-color: var(--docs-target-color);
+    --md-typeset-del-color: #5a2a2a;
+    --md-typeset-ins-color: #2a5a2a;
+    --md-typeset-table-color: var(--docs-quote-color);
+
+    --md-code-fg-color: var(--docs-text-color);
+    --md-code-bg-color: var(--docs-code-color);
+    --md-code-hl-color: var(--docs-highlight-color);
+    --md-code-hl-color--light: var(--docs-highlight-color);
+
+    --md-footer-fg-color: var(--docs-text-color);
+    --md-footer-fg-color--light: #999999;
+    --md-footer-fg-color--lighter: #6a6a6a;
+    --md-footer-bg-color: var(--docs-nav-color);
+    --md-footer-bg-color--dark: var(--docs-active-color);
+
+    --md-shadow-z1: none;
+    --md-shadow-z2: none;
+    --md-shadow-z3: none;
+
+    color-scheme: dark;
+}
+
+/*
+Header
+*/
+.md-header {
+    background-color: var(--docs-nav-color);
+    box-shadow: none;
+    border-bottom: 1px solid var(--docs-active-color);
+}
+
+/*
+Sidebars
+*/
+/*
+The primary sidebar is a sticky, zero-height stub, so the nav column is painted
+on the scroll wrapper that actually spans the viewport.
+*/
+.md-sidebar--primary .md-sidebar__scrollwrap {
+    background-color: var(--docs-nav-color);
+    border-radius: 6px;
+    min-height: calc(100vh - 4.8rem);
+}
+
+.md-nav {
+    background-color: inherit;
+}
+
+/* On mobile the primary nav is a drawer that covers the page. */
+.md-nav--primary,
+.md-nav--primary .md-nav__title {
+    background-color: var(--docs-nav-color);
+}
+
+.md-nav__title {
+    color: var(--docs-text-color);
+    background-color: inherit;
+    box-shadow: none;
+}
+
+.md-nav__link {
+    color: var(--docs-text-color);
+}
+
+.md-sidebar--primary .md-nav__link {
+    padding: 0.4rem 0.6rem;
+    margin: 0;
+    border-radius: 0;
+}
+
+.md-nav--primary .md-nav__link[for]:focus:not(.md-nav__link--active),
+.md-nav--primary .md-nav__link[for]:hover:not(.md-nav__link--active),
+.md-nav--primary .md-nav__link[href]:focus:not(.md-nav__link--active),
+.md-nav--primary .md-nav__link[href]:hover:not(.md-nav__link--active) {
+    color: var(--docs-text-color);
+    background-color: var(--docs-active-color);
+}
+
+.md-nav--primary .md-nav__item .md-nav__link--active,
+.md-nav--primary .md-nav__item .md-nav__link--active code {
+    color: var(--docs-text-color);
+    font-weight: 700;
+}
+
+/* The table of contents is a reading aid, so it stays quiet until hovered. */
+.md-sidebar--secondary .md-nav__link--active {
+    color: var(--docs-link-color);
+    background-color: transparent;
+}
+
+/*
+Content
+*/
+.md-main {
+    background-color: var(--docs-section-color);
+}
+
+/*
+The sidebars stick to the bottom of the header, so the column starts there as well.
+A top margin here would let them slide up by that much on the first scroll.
+*/
+.md-main__inner {
+    margin-top: 0;
+}
+
+/* Centre the column once the viewport is wider than it, while keeping a gutter on narrow screens. */
+.md-content__inner {
+    max-width: 1024px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 1.2rem;
+    padding-left: 0.8rem;
+    padding-right: 0.8rem;
+}
+
+.md-typeset :is(h1, h2, h3, h4, h5, h6):target {
+    margin-left: -0.5rem;
+    margin-right: -0.5rem;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+    border-radius: 6px;
+    background-color: var(--docs-target-color);
+}
+
+/* The raise centres the icon on the cap height of the heading it belongs to. */
+.md-typeset .headerlink {
+    color: var(--docs-lineno-color);
+    font-size: 0.8em;
+    vertical-align: 0.125em;
+}
+
+/*
+Codeblocks
+*/
+.md-typeset .highlight,
+.md-typeset pre > code {
+    border-radius: 6px;
+}
+
+.md-typeset .highlight {
+    color: var(--docs-text-color);
+    background-color: var(--docs-code-color);
+    border: 1px solid var(--docs-code-color);
+    margin: 24px 0;
+}
+
+.md-typeset .highlighttable {
+    margin: 0;
+    background-color: var(--docs-code-color);
+}
+
+.md-typeset .highlighttable .linenos {
+    background-color: var(--docs-code-color);
+    border: none;
+}
+
+.md-typeset .highlighttable .linenodiv pre {
+    border-right: 1px solid var(--docs-lineno-color);
+    padding: 0;
+    line-height: 1.4;
+}
+
+.md-typeset .highlighttable .linenodiv a {
+    color: var(--docs-lineno-color);
+}
+
+.md-typeset .highlighttable .linenodiv .special {
+    background-color: var(--docs-highlight-color);
+}
+
+.md-typeset .highlighttable .code {
+    background-color: var(--docs-code-color);
+    border: none;
+}
+
+.md-typeset .highlighttable .code pre,
+.md-typeset .highlighttable .code code {
+    color: var(--docs-text-color);
+    background-color: var(--docs-code-color);
+    line-height: 1.4;
+    border: none;
+}
+
+.md-typeset .highlight .hll,
+.md-typeset .highlight [data-linenos]:before {
+    background-color: var(--docs-highlight-color);
+}
+
+/*
+Inline code
+*/
+.md-typeset code {
+    color: var(--docs-text-color);
+    background-color: var(--docs-code-color);
+    border: 1px solid var(--docs-code-color);
+    border-radius: 6px;
+}
+
+/*
+Details
+*/
+/* The theme drops the bottom padding of a closed block, so both states must be set together. */
+.md-typeset details,
+.md-typeset details:not([open]) {
+    margin-bottom: 24px;
+    padding: 16px;
+    background-color: transparent;
+    border: 2px solid var(--docs-quote-color);
+    border-radius: 6px;
+    box-shadow: none;
+    font-size: inherit;
+}
+
+/* Spacing inside the block comes from its padding, not from the margins of its children. */
+.md-typeset details > summary,
+.md-typeset details:not([open]) > summary {
+    margin-top: 0;
+    margin-bottom: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+    background-color: transparent;
+    font-weight: 700;
+}
+
+/*
+The theme sets the summary padding with a `[dir]` selector, so these must match its specificity.
+The inset reserved for the hidden icon is reduced to a small indent.
+*/
+[dir="ltr"] .md-typeset details > summary {
+    padding-left: 0.5rem;
+    padding-right: 1rem;
+}
+
+[dir="rtl"] .md-typeset details > summary {
+    padding-right: 0.5rem;
+    padding-left: 1rem;
+}
+
+.md-typeset details[open] > summary {
+    margin-bottom: 16px;
+}
+
+/* The content is indented to the same amount as the summary. */
+.md-typeset details > :not(summary) {
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+}
+
+html .md-typeset details[open] > summary + * {
+    margin-top: 0;
+}
+
+html .md-typeset details > :last-child {
+    margin-bottom: 0;
+}
+
+.md-typeset details > summary:hover {
+    cursor: pointer;
+}
+
+/* The theme reserves the left inset for an admonition icon, which these blocks do not use. */
+.md-typeset details > summary:before {
+    display: none;
+}
+
+.md-typeset details > summary:after {
+    color: var(--docs-text-color);
+}
+
+.md-typeset details > p {
+    margin: 16px 0;
+}
+
+/*
+Blockquotes
+*/
+/* The theme sets the blockquote border with a `[dir]` selector, so these must match its specificity. */
+[dir="ltr"] .md-typeset blockquote,
+[dir="rtl"] .md-typeset blockquote {
+    color: var(--docs-text-color);
+    background-color: var(--docs-quote-color);
+    border: 1px solid var(--docs-quote-color);
+    border-left: 4px solid var(--docs-notice-color);
+    border-top-right-radius: 6px;
+    border-bottom-right-radius: 6px;
+    margin-left: 0;
+    padding: 16px 12px 16px 24px;
+}
+
+.md-typeset blockquote > :first-child {
+    margin-top: 0;
+}
+
+.md-typeset blockquote > :last-child {
+    margin-bottom: 0;
+}
+
+/*
+Tables
+*/
+.md-typeset table:not([class]) {
+    background-color: var(--docs-code-color);
+    border: 1px solid var(--docs-quote-color);
+}
+
+.md-typeset table:not([class]) th {
+    color: var(--docs-text-color);
+    background-color: var(--docs-nav-color);
+}
+
+.md-typeset table:not([class]) td {
+    background-color: var(--docs-code-color);
+    border-top: 1px solid var(--docs-quote-color);
+}
+
+/*
+Search
+*/
+.md-search__form {
+    background-color: var(--docs-section-color);
+}
+
+.md-search__form:hover {
+    background-color: var(--docs-active-color);
+}
+
+[data-md-toggle="search"]:checked ~ .md-header .md-search__form {
+    background-color: var(--docs-section-color);
+}
+
+.md-search__input {
+    color: var(--docs-text-color);
+    caret-color: var(--docs-text-color);
+}
+
+.md-search__input::placeholder {
+    color: var(--docs-text-color);
+}
+
+.md-search-result__meta,
+.md-search-result__article,
+.md-search-result__teaser {
+    color: var(--docs-text-color);
+}
+
+.md-search__output {
+    background-color: var(--docs-nav-color);
+}
+
+/*
+Footer
+*/
+.md-footer {
+    background-color: var(--docs-nav-color);
+}
+
+.md-footer-meta {
+    background-color: var(--docs-active-color);
+}
+
+/*
+Scrollbars
+*/
 ::-webkit-scrollbar {
     width: 8px;
     height: 8px;
-    background: #222222!important;
+    background-color: var(--docs-nav-color);
 }
 
 ::-webkit-scrollbar-track {
-    border-radius: 5px;
-    background: #202020!important;
+    border-radius: 6px;
+    background-color: var(--docs-nav-color);
 }
 
 ::-webkit-scrollbar-thumb {
-    border-radius: 5px;
-    background: #424242!important;
+    border-radius: 6px;
+    background-color: var(--docs-scrollbar-color);
 }
 
-div.wy-nav-content,
-.wy-nav-content-wrap,
-.wy-side-nav-search input[type=text] {
-    background: #222222;
+::-webkit-scrollbar-thumb:hover {
+    background-color: var(--docs-scrollbar-color);
 }
-
-.wy-menu-vertical li.toctree-l2 a,
-.wy-menu-vertical a {
-    color: #bbbbbb;
-    background: #343131;
-}
-
-.wy-menu-vertical li.toctree-l2 a:hover,
-.wy-menu-vertical a:hover {
-    background: #2d2d2d;
-}
-
-.wy-side-nav-search input[type=text] {
-    color: #bbbbbb;
-    box-shadow: none;
-    caret-color : #bbbbbb;
-}
-
-.rst-content div[class^=highlight] pre {
-    background: #121212;
-}
-
-.wy-menu-vertical li.current,
-.wy-menu-vertical li.current > a,
-.wy-menu-vertical li.toctree-l1.current > a,
-.wy-menu-vertical li.toctree-l2.current > a,
-.wy-menu-vertical li.toctree-l2.current li.toctree-l3 > a,
-.wy-menu-vertical li.toctree-l3.current > a,
-.wy-menu-vertical li.toctree-l3.current li.toctree-l4 > a {
-    color: #bbbbbb;
-    background: #343131!important;
-    border-bottom: 1px solid #343131;
-    border-top: 1px solid #343131;
-}
-
-.wy-menu-vertical li.current > a:hover,
-.wy-menu-vertical li.toctree-l1.current > a:hover,
-.wy-menu-vertical li.toctree-l2.current > a:hover,
-.wy-menu-vertical li.toctree-l2.current li.toctree-l3 > a:hover,
-.wy-menu-vertical li.toctree-l3.current > a:hover,
-.wy-menu-vertical li.toctree-l3.current li.toctree-l4 > a:hover {
-    background: #2d2d2d!important;
-}
-
-.rst-content pre code,
-.rst-content code,
-.rst-content tt,
-code {
-    color: #bbbbbb;
-    background: #121212;
-    border: none;
-    box-shadow: none;
-    border-radius: 3px;
-}
-
-.hljs-attribute,
-.hljs-name,
-.hljs-tag,
-.hljs-keyword,
-.hljs-literal {
-    color: coral;
-}
-
-.hljs-built_in {
-    color: #8484d5;
-}
-
-.hljs-string {
-    color: #667e49;
-}
-
-.hljs-title {
-    color: #f3c069;
-}
-
-.hljs-class .hljs-title {
-    color: #cccccc;
-}
-
-.rst-content div[class^=highlight],
-.rst-content pre.literal-block {
-    border: 1px solid #626262;
-    border-radius: 5px;
-}
-
-.rst-content table.docutils thead,
-.rst-content table.field-list thead,
-.wy-table thead {
-    color: #bbbbbb;
-    background: #121212;
-}
-
-.rst-content table.docutils:not(.field-list) tr:nth-child(2n-1) td,
-.wy-table-backed,
-.wy-table-odd td,
-.wy-table-striped tr:nth-child(2n-1) td {
-    color: #bbbbbb;
-    background: #414141;
-}
-
-blockquote {
-    background: #323232;
-    border: 2px solid #363636;
-    border-left: 4px solid #2980b9;
-    margin-left: 0 !important;
-    padding: 16px 12px 0 24px;
-}
-
-blockquote code {
-    line-height: normal;
-}
-
-li p {
-    margin: 0 !important;
-}
-
 
 /*
-Change mermaid via css here since
-mkdocs does not know how to read
-style definitions from the mermaid
-config
+Code blocks and the sidebar use the standard `scrollbar-color` property, which makes the
+browser ignore the `::-webkit-scrollbar` rules above for them. They need their own colours.
 */
+.md-typeset pre > code,
+.md-sidebar__scrollwrap {
+    scrollbar-color: var(--docs-scrollbar-color) transparent;
+}
 
-div.mermaid {
+/* The theme tints these with the accent colour on hover, which is a link blue here. */
+.md-typeset pre > code:hover,
+.md-sidebar__scrollwrap:focus-within,
+.md-sidebar__scrollwrap:hover {
+    scrollbar-color: var(--docs-scrollbar-color) transparent;
+}
+
+/*
+Mermaid
+*/
+[data-md-color-scheme="slate"] {
+    --md-mermaid-font-family: var(--md-text-font-family), sans-serif;
+
+    --md-mermaid-bg-color: var(--docs-section-color);
+    --md-mermaid-edge-color: #6C8EBF;
+    --md-mermaid-label-bg-color: #DAE8FC;
+    --md-mermaid-label-fg-color: var(--docs-code-color);
+    --md-mermaid-node-bg-color: #DAE8FC;
+    --md-mermaid-node-fg-color: #6C8EBF;
+}
+
+.md-typeset .mermaid {
     display: flex;
     justify-content: center;
 }
 
-div.mermaid svg {
+.md-typeset .mermaid svg {
     width: auto;
     height: auto;
     max-width: 100%;
     padding: 12px 0;
-}
-
-.edgeLabel {
-    background-color: transparent!important;
-    color: #bbbbbb!important;
-}
-
-.messageText {
-    fill: #bbbbbb!important;
-    stroke: none!important;
-}
-
-g rect {
-    fill: #DAE8FC !important;
-    stroke: #6C8EBF !important;
-}
-
-g polygon {
-    fill: #FFF2CC !important;
-    stroke: #E5D092 !important;
-}
-
-g[id*="success__"] rect {
-    fill: #D5E8D4 !important;
-    stroke: #82B366 !important;
-}
-
-g[id*="fail__"] rect {
-    fill: #F8CECC !important;
-    stroke: #B85450 !important;
-}
-
-g[id*="warn__"] rect {
-    fill: #FFF2CC !important;
-    stroke: #E5D092 !important;
-}
-
-g[id*="primary__"] rect {
-    fill: #DAE8FC !important;
-    stroke: #6C8EBF !important;
-}
-
-g[id*="secondary__"] rect {
-    fill: #F5F5F5 !important;
-    stroke: #666666 !important;
-}
-
-g[id*="start__"] rect {
-    fill: #000000 !important;
-    stroke: #666666 !important;
-}
-
-g[id*="start__"] span {
-    color: #ffffff !important;
 }

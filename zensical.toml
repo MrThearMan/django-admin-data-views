@@ -1,0 +1,53 @@
+[project]
+site_name = "Django Admin Data Views"
+site_description = "Add custom data views to the Django admin panel."
+site_url = "https://mrthearman.github.io/django-admin-data-views/"
+
+repo_url = "https://github.com/MrThearMan/django-admin-data-views"
+repo_name = "MrThearMan/django-admin-data-views"
+
+extra_css = [
+  "css/docs.css",
+  "css/pygments.css",
+]
+extra_javascript = [
+  "js/docs.js",
+]
+
+nav = [
+  { "Home" = "index.md" },
+  { "Setup" = "setup.md" },
+  { "Contributing" = "contributing.md" },
+]
+
+[project.theme]
+variant = "modern"
+custom_dir = "docs/overrides"
+language = "en"
+features = [
+  "content.code.copy",
+  "navigation.instant",
+  "navigation.instant.prefetch",
+  "navigation.top",
+  "navigation.tracking",
+  "search.highlight",
+  "search.suggest",
+  "toc.follow",
+]
+
+[[project.theme.palette]]
+scheme = "slate"
+primary = "custom"
+accent = "custom"
+
+[project.markdown_extensions]
+attr_list = {}
+meta = {}
+toc.permalink = "🔗"
+pymdownx.blocks.details = {}
+pymdownx.highlight.anchor_linenums = true
+pymdownx.highlight.linenums = true
+pymdownx.inlinehilite = {}
+pymdownx.superfences.custom_fences = [
+  { name = "mermaid", class = "mermaid", format = "pymdownx.superfences.fence_code_format" },
+]
