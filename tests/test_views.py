@@ -79,18 +79,18 @@ def test_admin_foo_list_view(django_client):
     assert content.find(name="h1").text == "Foo items"
 
     list_table = content.find(name="form", attrs={"id": "changelist-form"})
-    headers = list_table.find("table").find(name="thead").findAll(name="th")
+    headers = list_table.find("table").find(name="thead").find_all(name="th")
 
     assert len(headers) == 2
 
     assert headers[0].find(name="span").text == "Name"
     assert headers[1].find(name="span").text == "Value"
 
-    rows = list_table.find("table").find(name="tbody").findAll(name="tr")
+    rows = list_table.find("table").find(name="tbody").find_all(name="tr")
 
     assert len(rows) == 2
 
-    row_1_items = rows[0].findAll(name="td")
+    row_1_items = rows[0].find_all(name="td")
 
     assert len(row_1_items) == 2
 
@@ -100,7 +100,7 @@ def test_admin_foo_list_view(django_client):
     assert row_1_link.text == "Foo"
     assert row_1_items[1].text == "1"
 
-    row_2_items = rows[1].findAll(name="td")
+    row_2_items = rows[1].find_all(name="td")
 
     assert len(row_2_items) == 2
 
@@ -120,12 +120,12 @@ def test_admin_foo_item_view(django_client):
 
     assert content.find(name="h1").text == "This is 123"
 
-    sections = content.findAll(name="fieldset")
+    sections = content.find_all(name="fieldset")
 
     assert len(sections) == 2
     section_1_title = sections[0].find(name="h2")
     section_1_subtitle = sections[0].find(name="div", attrs={"class": "description"})
-    section_1_fields = sections[0].findAll(name="div", attrs={"class": "adv-dict-item"})
+    section_1_fields = sections[0].find_all(name="div", attrs={"class": "adv-dict-item"})
 
     assert section_1_title is None
     assert section_1_subtitle is None
@@ -139,7 +139,7 @@ def test_admin_foo_item_view(django_client):
 
     section_2_title = sections[1].find(name="h2")
     section_2_subtitle = sections[1].find(name="div", attrs={"class": "description"})
-    section_2_fields = sections[1].findAll(name="div", attrs={"class": "adv-dict-item"})
+    section_2_fields = sections[1].find_all(name="div", attrs={"class": "adv-dict-item"})
 
     assert section_2_title.text == "This is another section"
     assert section_2_subtitle.text == "This is the description for this section"
@@ -162,18 +162,18 @@ def test_admin_bar_list_view(django_client):
     assert content.find(name="h1").text == "Bar items"
 
     list_table = content.find(name="form", attrs={"id": "changelist-form"})
-    headers = list_table.find("table").find(name="thead").findAll(name="th")
+    headers = list_table.find("table").find(name="thead").find_all(name="th")
 
     assert len(headers) == 2
 
     assert headers[0].find(name="span").text == "Fizz"
     assert headers[1].find(name="span").text == "Buzz"
 
-    rows = list_table.find("table").find(name="tbody").findAll(name="tr")
+    rows = list_table.find("table").find(name="tbody").find_all(name="tr")
 
     assert len(rows) == 2
 
-    row_1_items = rows[0].findAll(name="td")
+    row_1_items = rows[0].find_all(name="td")
 
     assert len(row_1_items) == 2
 
@@ -183,7 +183,7 @@ def test_admin_bar_list_view(django_client):
     assert row_1_link.text == "X"
     assert row_1_items[1].text == "1"
 
-    row_2_items = rows[1].findAll(name="td")
+    row_2_items = rows[1].find_all(name="td")
 
     assert len(row_2_items) == 2
 
@@ -203,12 +203,12 @@ def test_admin_bar_item_view(django_client):
 
     assert content.find(name="h1").text == "Bar page"
 
-    sections = content.findAll(name="fieldset")
+    sections = content.find_all(name="fieldset")
 
     assert len(sections) == 2
     section_1_title = sections[0].find(name="h2")
     section_1_subtitle = sections[0].find(name="div", attrs={"class": "description"})
-    section_1_fields = sections[0].findAll(name="div", attrs={"class": "adv-dict-item"})
+    section_1_fields = sections[0].find_all(name="div", attrs={"class": "adv-dict-item"})
 
     assert section_1_title is None
     assert section_1_subtitle is None
@@ -222,7 +222,7 @@ def test_admin_bar_item_view(django_client):
 
     section_2_title = sections[1].find(name="h2")
     section_2_subtitle = sections[1].find(name="div", attrs={"class": "description"})
-    section_2_fields = sections[1].findAll(name="div", attrs={"class": "adv-dict-item"})
+    section_2_fields = sections[1].find_all(name="div", attrs={"class": "adv-dict-item"})
 
     assert section_2_title.text == "This is another section"
     assert section_2_subtitle.text == "This is the description for this section"
@@ -245,25 +245,25 @@ def test_admin_fizz_list_view(django_client):
     assert content.find(name="h1").text == "Fizz view"
 
     list_table = content.find(name="form", attrs={"id": "changelist-form"})
-    headers = list_table.find("table").find(name="thead").findAll(name="th")
+    headers = list_table.find("table").find(name="thead").find_all(name="th")
 
     assert len(headers) == 2
 
     assert headers[0].find(name="span").text == "A"
     assert headers[1].find(name="span").text == "B"
 
-    rows = list_table.find("table").find(name="tbody").findAll(name="tr")
+    rows = list_table.find("table").find(name="tbody").find_all(name="tr")
 
     assert len(rows) == 2
 
-    row_1_items = rows[0].findAll(name="td")
+    row_1_items = rows[0].find_all(name="td")
 
     assert len(row_1_items) == 2
 
     assert row_1_items[0].text == "X"
     assert row_1_items[1].text == "1"
 
-    row_2_items = rows[1].findAll(name="td")
+    row_2_items = rows[1].find_all(name="td")
 
     assert len(row_2_items) == 2
 
@@ -280,12 +280,12 @@ def test_admin_buzz_item_view(django_client):
 
     assert content.find(name="h1").text == "Buzz page"
 
-    sections = content.findAll(name="fieldset")
+    sections = content.find_all(name="fieldset")
 
     assert len(sections) == 1
     section_1_title = sections[0].find(name="h2")
     section_1_subtitle = sections[0].find(name="div", attrs={"class": "description"})
-    section_1_fields = sections[0].findAll(name="div", attrs={"class": "adv-dict-item"})
+    section_1_fields = sections[0].find_all(name="div", attrs={"class": "adv-dict-item"})
 
     assert section_1_title is None
     assert section_1_subtitle is None
