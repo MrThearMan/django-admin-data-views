@@ -30,7 +30,7 @@ IMPORT_STRINGS: set[bytes | str] = {
     "URLS.0.items.view",
 }
 
-REMOVED_SETTINGS: set[str] = set()
+REMOVED_SETTINGS: dict[str, str | None] = {}
 
 
 def urls_validator(val: Any) -> None:

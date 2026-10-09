@@ -9,6 +9,8 @@ __all__ = [
     "AppModel",
     "Callable",
     "DictItems",
+    "FormattedField",
+    "FormattedFields",
     "HelpTexts",
     "ItemContext",
     "ItemViewContext",
@@ -30,6 +32,10 @@ HelpTexts = dict[str, Union[str, "HelpTexts"]]
 NestedItem = list[Union[str, NestedDict, "NestedItem"]]
 DictItem = str | NestedDict | NestedItem
 DictItems = tuple[DictItem, str]
+
+# Fields paired with their help texts, as rendered by the item view templates.
+FormattedFields = dict[str, "FormattedField"]
+FormattedField = tuple[NestedValue | FormattedFields | list["FormattedField"], str]
 
 
 class Perms(TypedDict):

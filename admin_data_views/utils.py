@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from functools import wraps
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, cast
 
 from django.contrib import admin
 from django.template.response import TemplateResponse
@@ -29,6 +29,12 @@ __all__ = [
 ]
 
 
+def get_view_name(view: str) -> str:
+    # The settings holder has imported the view from its import string at this point.
+    func = cast("Callable[..., Any]", view)
+    return f"{func.__module__}.{func.__qualname__}"
+
+
 def render_with_table_view(func: Callable[..., TableContext]) -> Callable[..., TemplateResponse]:
     """Render returned context in a table view."""
 
@@ -39,7 +45,7 @@ def render_with_table_view(func: Callable[..., TableContext]) -> Callable[..., T
 
         item: URLConfig
         for item in admin_data_settings.URLS:
-            view_name = f"{item['view'].__module__}.{item['view'].__qualname__}"
+            view_name = get_view_name(item["view"])
             if view_name == func_name:
                 table_context = TableViewContext(
                     slug=item["route"],
@@ -77,10 +83,13 @@ def render_with_table_view(func: Callable[..., TableContext]) -> Callable[..., T
             raise ValueError(msg)
 
         request: HttpRequest = args[0]
-        table_context.update(admin.site.each_context(request))
-        table_context = {**context.get("extra_context", {}), **table_context}
+        template_context = {
+            **context.get("extra_context", {}),
+            **table_context,
+            **admin.site.each_context(request),
+        }
         request.current_app = admin_data_settings.NAME
-        return TemplateResponse(request, "admin_data_views/admin_data_table_page.html", table_context)
+        return TemplateResponse(request, "admin_data_views/admin_data_table_page.html", template_context)
 
     return wrapper
 
@@ -106,7 +115,7 @@ def render_with_item_view(func: Callable[..., ItemContext]) -> Callable[..., Tem
         item: URLConfig
         for item in admin_data_settings.URLS:
             # Item views separately
-            view_name = f"{item['view'].__module__}.{item['view'].__qualname__}"
+            view_name = get_view_name(item["view"])
             if view_name == func_name:
                 if item_context["slug"] is None:
                     item_context["slug"] = item["route"]
@@ -116,7 +125,7 @@ def render_with_item_view(func: Callable[..., ItemContext]) -> Callable[..., Tem
                 continue
 
             # Item view inside table view definition
-            view_name = f"{item['items']['view'].__module__}.{item['items']['view'].__qualname__}"
+            view_name = get_view_name(item["items"]["view"])
             if view_name == func_name:
                 if item_context["slug"] is None:
                     item_context["slug"] = item["route"]
@@ -131,10 +140,13 @@ def render_with_item_view(func: Callable[..., ItemContext]) -> Callable[..., Tem
             raise ValueError(msg)
 
         request: HttpRequest = args[0]
-        item_context.update(admin.site.each_context(request))
-        item_context = {**context.get("extra_context", {}), **item_context}
+        template_context = {
+            **context.get("extra_context", {}),
+            **item_context,
+            **admin.site.each_context(request),
+        }
         request.current_app = admin_data_settings.NAME
-        return TemplateResponse(request, "admin_data_views/admin_data_item_page.html", item_context)
+        return TemplateResponse(request, "admin_data_views/admin_data_item_page.html", template_context)
 
     return wrapper
 

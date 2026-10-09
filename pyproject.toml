@@ -63,6 +63,8 @@ docs = [
 lint = [
     "prek==0.5.5",
     "ruff==0.16.10",
+    "mypy==2.4.0",
+    "django-stubs==6.1.2",
 ]
 
 [tool.uv]
@@ -78,6 +80,19 @@ module-root = ""
 module-name = [
     "admin_data_views",
 ]
+
+[tool.mypy]
+plugins = [
+    "mypy_django_plugin.main",
+]
+exclude = [
+    "^tests/",
+    "^docs/",
+    "^site/",
+]
+
+[tool.django-stubs]
+django_settings_module = "example_project.project.settings"
 
 [tool.coverage.run]
 relative_files = true

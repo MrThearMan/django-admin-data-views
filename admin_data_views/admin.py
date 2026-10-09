@@ -45,7 +45,7 @@ def get_data_admin_views() -> AppDict:
 
 
 def download_json(request: HttpRequest) -> HttpResponse:  # pragma: no cover
-    if request.method.upper() != "POST":
+    if request.method != "POST":
         return HttpResponse(
             status=405,
             content=f"{request.method} not supported.",
@@ -72,7 +72,7 @@ def download_json(request: HttpRequest) -> HttpResponse:  # pragma: no cover
 
 
 def download_csv(request: HttpRequest) -> HttpResponse:  # pragma: no cover
-    if request.method.upper() != "POST":
+    if request.method != "POST":
         return HttpResponse(
             status=405,
             content=f"{request.method} not supported.",
@@ -144,10 +144,10 @@ def admin_data_index_view(self: admin.AdminSite, request: HttpRequest, **kwargs:
 
 def get_admin_data_urls(self: admin.AdminSite) -> list[URLResolver | URLPattern]:
     baseroute = admin_data_settings.NAME.lower().replace(" ", "-")
-    custom_paths = [
+    custom_paths: list[URLResolver | URLPattern] = [
         path(
             route=f"{baseroute}/",
-            view=self.admin_view(self.admin_data_index_view),
+            view=self.admin_view(self.admin_data_index_view),  # type: ignore[attr-defined]
             name="admin-data-index-view",
         ),
         path(
@@ -185,14 +185,14 @@ def get_urls(
     original_get_urls: Callable[[], list[URLResolver | URLPattern]],
 ) -> Callable[[admin.AdminSite], list[URLResolver | URLPattern]]:
     def get_urls_inner(self: admin.AdminSite) -> list[URLResolver | URLPattern]:
-        return self.get_admin_data_urls() + original_get_urls()
+        return self.get_admin_data_urls() + original_get_urls()  # type: ignore[attr-defined]
 
     return get_urls_inner
 
 
 # Patch the admin site object with data admin view methods
 # pylint: disable=no-value-for-parameter
-admin.site.get_app_list = get_app_list.__get__(admin.site, admin.AdminSite)
-admin.site.admin_data_index_view = admin_data_index_view.__get__(admin.site, admin.AdminSite)
-admin.site.get_admin_data_urls = get_admin_data_urls.__get__(admin.site, admin.AdminSite)
-admin.site.get_urls = get_urls(admin.site.get_urls).__get__(admin.site, admin.AdminSite)
+admin.site.get_app_list = get_app_list.__get__(admin.site, admin.AdminSite)  # type: ignore[method-assign]
+admin.site.admin_data_index_view = admin_data_index_view.__get__(admin.site, admin.AdminSite)  # type: ignore[attr-defined]
+admin.site.get_admin_data_urls = get_admin_data_urls.__get__(admin.site, admin.AdminSite)  # type: ignore[attr-defined]
+admin.site.get_urls = get_urls(admin.site.get_urls).__get__(admin.site, admin.AdminSite)  # type: ignore[method-assign]

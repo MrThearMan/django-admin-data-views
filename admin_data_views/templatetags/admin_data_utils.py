@@ -7,7 +7,15 @@ from typing import TYPE_CHECKING
 from django import template
 
 if TYPE_CHECKING:
-    from admin_data_views.typing import Any, DictItems, ItemsView, NestedDict, SectionData
+    from admin_data_views.typing import (
+        Any,
+        FormattedField,
+        FormattedFields,
+        HelpTexts,
+        ItemsView,
+        NestedDict,
+        SectionData,
+    )
 
 register = template.Library()
 
@@ -50,14 +58,14 @@ def to_csv(value: list[list[str]]) -> str:
 
 
 @register.filter
-def fields_with_help_texts(section_data: SectionData) -> dict[str, DictItems]:
+def fields_with_help_texts(section_data: SectionData) -> FormattedFields:
     """Add help texts and iterate as dict items."""
 
-    def add_help_text(fields: NestedDict, help_texts: NestedDict) -> dict[str, DictItems]:
-        formatted_fields: dict[str, DictItems] = {}
+    def add_help_text(fields: NestedDict, help_texts: HelpTexts) -> FormattedFields:
+        formatted_fields: FormattedFields = {}
 
         for key, value in fields.items():
-            help_text: str | NestedDict = help_texts.get(key, "")
+            help_text = help_texts.get(key, "")
 
             if isinstance(value, dict):
                 if isinstance(help_text, str):
@@ -65,7 +73,7 @@ def fields_with_help_texts(section_data: SectionData) -> dict[str, DictItems]:
                 else:
                     formatted_fields[key] = (add_help_text(value, help_text), "")
             elif isinstance(value, list):
-                values = []
+                values: list[FormattedField] = []
                 for item in value:
                     if not isinstance(item, dict | list):
                         values.append((item, ""))
