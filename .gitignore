@@ -22,3 +22,6 @@
 
 # venv
 /.venv
+
+# Example project database
+/example_project/project/testdb
