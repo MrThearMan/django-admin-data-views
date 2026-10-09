@@ -31,8 +31,12 @@ classifiers = [
     "Intended Audience :: Developers",
     "Natural Language :: English",
 ]
-requires-python = ">=3.11,<4"
-dynamic = ["dependencies"]
+requires-python = ">=3.12"
+dependencies = [
+    "django>=5.2.17",
+    "django-settings-holder>=0.2.0",
+    "typing-extensions>=4.16.0; python_full_version < '3.11'",
+]
 
 [project.urls]
 "Homepage" = "https://mrthearman.github.io/django-admin-data-views"
@@ -40,31 +44,40 @@ dynamic = ["dependencies"]
 "Bug Tracker" = "https://github.com/MrThearMan/django-admin-data-views/issues"
 "Documentation" = "https://mrthearman.github.io/django-admin-data-views"
 
-[tool.poetry]
-requires-poetry = ">=2.0.0"
-packages = [
-    { include = "admin_data_views" },
+[dependency-groups]
+# Development installs the library, so that "uv run" needs no extra flags.
+dev = [
+    "django-admin-data-views",
+]
+test = [
+    "pytest==9.1.1",
+    "coverage==7.16.2",
+    "pytest-django==4.14.0",
+    "nox==2026.8.17",
+    "beautifulsoup4==4.15.0",
+]
+docs = [
+    "mkdocs==1.6.1",
+    "pymdown-extensions==12.1",
+    "mkdocs-mermaid2-plugin==1.2.3",
+]
+lint = [
+    "pre-commit==4.6.2",
 ]
 
-[tool.poetry.dependencies]
-Django = ">=5.2.17"
-django-settings-holder = ">=0.2.0"
-typing-extensions = { version = ">=4.16.0", python = "<3.11" }
+[tool.uv]
+default-groups = "all"
 
-[tool.poetry.group.test.dependencies]
-pytest = "9.1.1"
-coverage = "7.16.2"
-pytest-django = "4.14.0"
-nox = "2026.8.17"
-beautifulsoup4 = "4.15.0"
+[tool.uv.sources]
+# Lets the "dev" group name this project.
+django-admin-data-views = { workspace = true }
 
-[tool.poetry.group.docs.dependencies]
-mkdocs = "1.6.1"
-pymdown-extensions = "12.1"
-mkdocs-mermaid2-plugin = "1.2.3"
-
-[tool.poetry.group.lint.dependencies]
-pre-commit = "4.6.2"
+[tool.uv.build-backend]
+# The package is at the repository root, not under "src".
+module-root = ""
+module-name = [
+    "admin_data_views",
+]
 
 [tool.ruff]
 fix = true
@@ -218,5 +231,5 @@ DJANGO_SETTINGS_MODULE = "example_project.project.settings"
 addopts = "--disable-warnings"
 
 [build-system]
-requires = ["poetry-core>=1.9.0"]
-build-backend = "poetry.core.masonry.api"
+requires = ["uv_build>=0.12.24,<0.13.0"]
+build-backend = "uv_build"
