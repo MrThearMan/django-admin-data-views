@@ -221,3 +221,18 @@ def test_fields_with_help_texts__nested__array__arrays() -> None:
             "",
         ),
     }
+
+
+def test_fields_with_help_texts__dict_help_text_for_value() -> None:
+    section_data = SectionData(
+        name=None,
+        description=None,
+        fields={"foo": 1},
+        help_texts={"foo": {"bar": "help"}},
+    )
+
+    result = fields_with_help_texts(section_data)
+
+    assert result == {
+        "foo": (1, ""),
+    }

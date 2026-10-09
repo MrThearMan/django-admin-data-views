@@ -77,7 +77,7 @@ def fields_with_help_texts(section_data: SectionData) -> FormattedFields:
                 values = add_help_text_to_list(value, {} if isinstance(help_text, str) else help_text)
                 formatted_fields[key] = (values, help_text if isinstance(help_text, str) else "")
             else:
-                formatted_fields[key] = (value, help_text)
+                formatted_fields[key] = (value, help_text if isinstance(help_text, str) else "")
 
         return formatted_fields
 
