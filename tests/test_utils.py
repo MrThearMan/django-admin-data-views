@@ -194,3 +194,30 @@ def test_fields_with_help_texts__nested__array__dicts__sub() -> None:
             "",
         ),
     }
+
+
+def test_fields_with_help_texts__nested__array__arrays() -> None:
+    section_data = SectionData(
+        name=None,
+        description=None,
+        fields={"foo": [[1, {"one": "bar"}], "2"]},
+        help_texts={"foo": {"one": "this is one"}},
+    )
+
+    result = fields_with_help_texts(section_data)
+
+    assert result == {
+        "foo": (
+            [
+                (
+                    [
+                        (1, ""),
+                        ({"one": ("bar", "this is one")}, ""),
+                    ],
+                    "",
+                ),
+                ("2", ""),
+            ],
+            "",
+        ),
+    }

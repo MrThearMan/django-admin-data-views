@@ -14,6 +14,7 @@ if TYPE_CHECKING:
         HelpTexts,
         ItemsView,
         NestedDict,
+        NestedValue,
         SectionData,
     )
 
@@ -73,20 +74,23 @@ def fields_with_help_texts(section_data: SectionData) -> FormattedFields:
                 else:
                     formatted_fields[key] = (add_help_text(value, help_text), "")
             elif isinstance(value, list):
-                values: list[FormattedField] = []
-                for item in value:
-                    if not isinstance(item, dict | list):
-                        values.append((item, ""))
-                    else:
-                        res = add_help_text(item, {} if isinstance(help_text, str) else help_text)
-                        if not isinstance(res, tuple):
-                            res = (res, "")
-                        values.append(res)
-
+                values = add_help_text_to_list(value, {} if isinstance(help_text, str) else help_text)
                 formatted_fields[key] = (values, help_text if isinstance(help_text, str) else "")
             else:
                 formatted_fields[key] = (value, help_text)
 
         return formatted_fields
+
+    def add_help_text_to_list(items: list[NestedValue], help_texts: HelpTexts) -> list[FormattedField]:
+        values: list[FormattedField] = []
+        for item in items:
+            if isinstance(item, dict):
+                values.append((add_help_text(item, help_texts), ""))
+            elif isinstance(item, list):
+                values.append((add_help_text_to_list(item, help_texts), ""))
+            else:
+                values.append((item, ""))
+
+        return values
 
     return add_help_text(section_data["fields"], section_data.get("help_texts", {}))
