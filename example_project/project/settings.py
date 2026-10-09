@@ -89,6 +89,7 @@ LOGGING = {
 }
 
 ROOT_URLCONF = "example_project.project.urls"
+DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 WSGI_APPLICATION = "example_project.project.wsgi.application"
 LANGUAGE_CODE = "en"
 LANGUAGES = [("en", "English"), ("fi", "Finland")]
