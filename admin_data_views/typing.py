@@ -1,12 +1,7 @@
 from __future__ import annotations
 
 from collections.abc import Callable, ItemsView
-from typing import Any, NamedTuple, TypedDict, Union
-
-try:
-    from typing import NotRequired
-except ImportError:
-    from typing import NotRequired
+from typing import Any, NamedTuple, NotRequired, TypedDict, Union
 
 __all__ = [
     "Any",
