@@ -34,12 +34,12 @@ REMOVED_SETTINGS: dict[str, str | None] = {}
 
 
 def urls_validator(val: Any) -> None:
-    if not isinstance(val, list):  # pragma: no cover
+    if not isinstance(val, list):
         msg = "URLS must be a list"
         raise TypeError(msg)
 
     for i, item in enumerate(val):
-        if not isinstance(item, dict):  # pragma: no cover
+        if not isinstance(item, dict):
             msg = f"URLS[{i}] must be a dict"
             raise TypeError(msg)
 
@@ -54,7 +54,7 @@ def urls_validator(val: Any) -> None:
         if items is None:
             continue
 
-        if not isinstance(items, dict):  # pragma: no cover
+        if not isinstance(items, dict):
             msg = f"URLS[{i}]['items'] must be a dict"
             raise TypeError(msg)
 

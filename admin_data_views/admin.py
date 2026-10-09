@@ -44,7 +44,7 @@ def get_data_admin_views() -> AppDict:
     }
 
 
-def download_json(request: HttpRequest) -> HttpResponse:  # pragma: no cover
+def download_json(request: HttpRequest) -> HttpResponse:
     if request.method != "POST":
         return HttpResponse(
             status=405,
@@ -71,7 +71,7 @@ def download_json(request: HttpRequest) -> HttpResponse:  # pragma: no cover
     return response
 
 
-def download_csv(request: HttpRequest) -> HttpResponse:  # pragma: no cover
+def download_csv(request: HttpRequest) -> HttpResponse:
     if request.method != "POST":
         return HttpResponse(
             status=405,
@@ -110,7 +110,7 @@ def get_app_list(self: admin.AdminSite, request: HttpRequest, *args: Any) -> lis
 
         # Extend models in an already existing app
         if baseroute in app_dict and "models" in app_dict[baseroute]:
-            app_dict[baseroute]["models"].extend(data_admin_views["models"])  # pragma: no cover
+            app_dict[baseroute]["models"].extend(data_admin_views["models"])
         else:
             app_dict[baseroute] = data_admin_views
 

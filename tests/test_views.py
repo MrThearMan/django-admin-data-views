@@ -296,3 +296,42 @@ def test_admin_buzz_item_view(django_client):
 
     assert section_1_label_1.text == "Foo"
     assert section_1_input_1.get("value") == "Bar"
+
+
+@pytest.mark.django_db
+def test_admin_complex_item_view(django_client):
+    result: HttpResponse = django_client.get("/admin/admin-data-views/complex/", follow=True)
+
+    assert result.context["slug"] == "complex"
+    assert "category_url" not in result.context
+
+    soup = BeautifulSoup(result.content, features="html.parser")
+    content = soup.find(name="div", attrs={"id": "content"})
+
+    assert content.find(name="h1").text == "This is complex"
+
+
+@pytest.mark.django_db
+def test_admin_other_app_page(django_client):
+    result: HttpResponse = django_client.get("/admin/myapp/", follow=True)
+    soup = BeautifulSoup(result.content, features="html.parser")
+
+    main_content = soup.find(name="div", attrs={"id": "content-main"})
+
+    assert main_content.find(name="div", attrs={"class": "app-myapp"}) is not None
+    assert main_content.find(name="div", attrs={"class": "app-admin-data-views"}) is None
+
+
+@pytest.mark.django_db
+def test_admin_main_page__name_matches_existing_app(django_client, settings):
+    settings.ADMIN_DATA_VIEWS = {**settings.ADMIN_DATA_VIEWS, "NAME": "myapp"}
+
+    result: HttpResponse = django_client.get("/admin/", follow=True)
+    soup = BeautifulSoup(result.content, features="html.parser")
+
+    main_content = soup.find(name="div", attrs={"id": "content-main"})
+    myapp = main_content.find(name="div", attrs={"class": "app-myapp"})
+
+    assert myapp.find(name="tr", attrs={"class": "model-thing"}) is not None
+    assert myapp.find(name="tr", attrs={"class": "model-foo_list"}) is not None
+    assert main_content.find(name="div", attrs={"class": "app-admin-data-views"}) is None

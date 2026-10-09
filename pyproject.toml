@@ -96,19 +96,15 @@ django_settings_module = "example_project.project.settings"
 
 [tool.coverage.run]
 relative_files = true
+branch = true
+include = [
+    "admin_data_views/*",
+]
 
 [tool.coverage.report]
-omit = [
-    "tests/*",
-    "docs/*",
-    ".venv/*",
-    ".tox/*",
-]
-exclude_lines = [
-    "if TYPE_CHECKING:",
-    "except ImportError:",
-    "pragma: no cover",
-    "pass",
+fail_under = 100
+exclude_also = [
+    'if TYPE_CHECKING:',
 ]
 
 [tool.pytest.ini_options]

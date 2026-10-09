@@ -236,3 +236,21 @@ def test_fields_with_help_texts__dict_help_text_for_value() -> None:
     assert result == {
         "foo": (1, ""),
     }
+
+
+@pytest.mark.parametrize(
+    ("urls", "msg"),
+    [
+        ({}, "URLS must be a list"),
+        (["foo"], "URLS[0] must be a dict"),
+        (
+            [{"route": "foo/", "view": "example_project.project.urls.foo_list_view", "name": "foo", "items": []}],
+            "URLS[0]['items'] must be a dict",
+        ),
+    ],
+)
+def test_admin_data_setting_wrong_type(settings, urls, msg) -> None:
+    settings.ADMIN_DATA_VIEWS = {"URLS": urls}
+
+    with pytest.raises(TypeError, match=exact(msg)):
+        x = admin_data_settings.URLS
