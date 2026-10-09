@@ -25,6 +25,7 @@ deps-tree:
 
 # Start the development server
 dev port="8000":
+    @uv run python manage.py setup_dev
     @uv run python manage.py runserver localhost:{{port}}
 
 # Start a zensical server
