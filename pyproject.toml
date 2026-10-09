@@ -61,7 +61,8 @@ docs = [
     "mkdocs-mermaid2-plugin==1.2.3",
 ]
 lint = [
-    "pre-commit==4.6.2",
+    "prek==0.5.5",
+    "ruff==0.16.10",
 ]
 
 [tool.uv]

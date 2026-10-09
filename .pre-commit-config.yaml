@@ -1,6 +1,6 @@
 ci:
     skip: [
-        "poetry-lock",
+        "uv-lock",
     ]
 
 repos:
@@ -22,11 +22,10 @@ repos:
 -   repo: https://github.com/astral-sh/ruff-pre-commit
     rev: v0.16.10
     hooks:
-    -   id: ruff
+    -   id: ruff-check
     -   id: ruff-format
 
--   repo: https://github.com/python-poetry/poetry
-    rev: 2.5.1
+-   repo: https://github.com/astral-sh/uv-pre-commit
+    rev: 0.12.24
     hooks:
-    -   id: poetry-check
-    -   id: poetry-lock
+    -   id: uv-lock
