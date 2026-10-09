@@ -71,14 +71,14 @@
 
 {% if not is_popup %}
 {% block breadcrumbs %}
-<div class="breadcrumbs">
-<a href="{% url 'admin:index' %}">{% translate 'Home' %}</a>
-&rsaquo; <a href="{% url 'admin:admin-data-index-view' %}">{{ app_label|capfirst }}</a>
+<ol class="breadcrumbs">
+<li><a href="{% url 'admin:index' %}">{% translate 'Home' %}</a></li>
+<li><a href="{% url 'admin:admin-data-index-view' %}">{{ app_label|capfirst }}</a></li>
 {% if category_slug %}
-&rsaquo; <a href="{{ category_url }}">{{ category_slug|capfirst }}</a>
+<li><a href="{{ category_url }}">{{ category_slug|capfirst }}</a></li>
 {% endif %}
-&rsaquo; {{ slug|capfirst }}
-</div>
+<li aria-current="page">{{ slug|capfirst }}</li>
+</ol>
 {% endblock %}
 {% endif %}
 
