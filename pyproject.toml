@@ -1,6 +1,6 @@
 [project]
 name = "django-admin-data-views"
-version = "0.4.3"
+version = "0.4.4"
 description = "Add custom data views to django admin panel."
 authors = [
     { name = "Matti Lamppu", email = "lamppu.matti.akseli@gmail.com" },
